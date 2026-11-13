@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surya Partap Singh — Senior Data Engineer</title>
+  <meta name="description" content="Senior Data Engineer in Dallas, TX. Databricks, PySpark, Azure, Delta Lake — building reliable data platforms for healthcare and enterprise." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #f8f7f4;
+      --bg-2:      #f0ede8;
+      --text:      #1c1a17;
+      --text-2:    #4c4840;
+      --text-3:    #8a8278;
+      --border:    #e2ddd7;
+      --accent:    #3a7ca5;
+      --accent-2:  #d4e8f0;
+      --max:       860px;
+      --mono:      "JetBrains Mono", "Courier New", monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg:        #151412;
+      --bg-2:      #1e1c19;
+      --text:      #edeae4;
+      --text-2:    #b0aa9f;
+      --text-3:    #6e6860;
+      --border:    #2c2924;
+      --accent:    #5ba3c9;
+      --accent-2:  #1a2e3a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 1rem;
+      transition: background 0.2s, color 0.2s;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px) saturate(150%);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 32px;
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-2); letter-spacing: 0.01em;
+    }
+    .nav-right { display: flex; align-items: center; gap: 4px; }
+    .nav-links { display: flex; }
+    .nav-links a {
+      font-size: 0.85rem; color: var(--text-3);
+      padding: 6px 10px; border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--bg-2); }
+
+    .theme-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); border: 1px solid var(--border);
+      background: var(--bg-2); margin-left: 8px;
+      transition: all 0.15s;
+    }
+    .theme-btn:hover { color: var(--text); border-color: var(--text-3); }
+    .theme-btn svg { width: 15px; height: 15px; }
+    .icon-sun { display: none; }
+    .icon-moon { display: block; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+
+    /* HERO */
+    .hero { padding: 72px 0 60px; }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .hero-name {
+      font-size: clamp(2rem, 4.5vw, 2.9rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .hero-title {
+      font-size: 0.95rem;
+      color: var(--text-3);
+      margin-bottom: 28px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text-2);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .hero-detail {
+      font-size: 0.93rem;
+      color: var(--text-3);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+
+    .btn {
+      display: inline-flex; align-items: center;
+      height: 38px; padding: 0 18px;
+      border-radius: 99px; font-size: 0.85rem; font-weight: 500;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      background: transparent;
+    }
+    .btn-outline:hover { border-color: var(--text-3); color: var(--text); background: var(--bg-2); }
+
+    .hero-stats {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .hero-stat {
+      padding-right: 28px;
+      margin-right: 28px;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; margin-right: 0; }
+    .hero-stat-val {
+      font-size: 1.4rem; font-weight: 600;
+      letter-spacing: -0.03em; color: var(--text);
+      line-height: 1.2; margin-bottom: 2px;
+    }
+    .hero-stat-label {
+      font-size: 0.78rem; color: var(--text-3);
+      line-height: 1.4; max-width: 100px;
+    }
+
+    /* PROFILE IMAGE — no card, no shadow, no hover zoom */
+    .hero-photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* SECTIONS */
+    section { padding: 52px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--text-3);
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.75rem);
+      font-weight: 600; letter-spacing: -0.025em;
+      color: var(--text); margin-bottom: 20px;
+    }
+
+    /* SKILLS — plain text clusters, no pills */
+    .skills-table { display: grid; gap: 0; }
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .skill-row:first-child { border-top: 1px solid var(--border); }
+
+    .skill-cat {
+      font-size: 0.8rem; font-family: var(--mono);
+      color: var(--text-3); letter-spacing: 0.02em;
+      line-height: 1.6;
+    }
+
+    .skill-items {
+      font-size: 0.92rem; color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* SELECTED WORK */
+    .work-list { display: grid; gap: 0; }
+
+    .work-item {
+      border-top: 1px solid var(--border);
+    }
+    .work-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .work-toggle {
+      width: 100%; text-align: left; background: transparent;
+      padding: 24px 0;
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 20px;
+      transition: none;
+    }
+    .work-toggle:hover .work-title { color: var(--accent); }
+
+    .work-left { min-width: 0; }
+
+    .work-title {
+      font-size: 1.05rem; font-weight: 500;
+      letter-spacing: -0.02em; color: var(--text);
+      margin-bottom: 5px;
+      transition: color 0.15s;
+    }
+
+    .work-summary {
+      font-size: 0.875rem; color: var(--text-3);
+      line-height: 1.6; max-width: 560px;
+    }
+
+    .work-right {
+      display: flex; align-items: center; gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .work-metric {
+      font-family: var(--mono);
+      font-size: 0.82rem; color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .work-chevron {
+      width: 18px; height: 18px; flex-shrink: 0;
+      color: var(--text-3);
+      transition: transform 0.28s ease;
+    }
+    .work-item.open .work-chevron { transform: rotate(180deg); }
+
+    .work-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.32s ease;
+    }
+    .work-item.open .work-body { grid-template-rows: 1fr; }
+    .work-body-inner { overflow: hidden; }
+
+    .work-body-content {
+      padding-bottom: 28px;
+    }
+
+    /* Each project gets a slightly different inner layout */
+    .work-detail-text {
+      font-size: 0.9rem; color: var(--text-2);
+      line-height: 1.7; max-width: 640px;
+      margin-bottom: 16px;
+    }
+
+    .work-points {
+      display: grid; gap: 7px; margin-left: 0; padding-left: 0;
+      list-style: none;
+    }
+    .work-points li {
+      font-size: 0.875rem; color: var(--text-2);
+      line-height: 1.6; padding-left: 14px; position: relative;
+    }
+    .work-points li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.68em;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* For the two-col detail in project 2 */
+    .work-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 36px;
+      margin-bottom: 16px;
+    }
+    .work-col-label {
+      font-size: 0.75rem; font-family: var(--mono);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--text-3); margin-bottom: 5px;
+    }
+    .work-col-text {
+      font-size: 0.875rem; color: var(--text-2); line-height: 1.65;
+    }
+
+    /* EXPERIENCE */
+    .exp-list { display: grid; gap: 0; }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:first-child { border-top: 1px solid var(--border); }
+    .exp-item.edu { opacity: 0.75; }
+
+    .exp-date {
+      font-family: var(--mono);
+      font-size: 0.75rem; color: var(--text-3);
+      line-height: 1.6; padding-top: 3px;
+    }
+
+    .exp-role {
+      font-size: 1rem; font-weight: 500;
+      letter-spacing: -0.02em; margin-bottom: 2px;
+    }
+    .exp-company {
+      font-size: 0.85rem; color: var(--text-3);
+      margin-bottom: 12px;
+    }
+    .exp-copy {
+      font-size: 0.875rem; color: var(--text-2);
+      line-height: 1.65; max-width: 580px;
+    }
+    .exp-bullets {
+      list-style: none; display: grid; gap: 6px; padding: 0;
+    }
+    .exp-bullets li {
+      font-size: 0.875rem; color: var(--text-2);
+      line-height: 1.65; padding-left: 14px; position: relative;
+    }
+    .exp-bullets li::before {
+      content: ""; position: absolute; left: 0; top: 0.68em;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--border);
+    }
+
+    /* ABOUT */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 160px;
+      gap: 48px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 0.975rem; color: var(--text-2);
+      line-height: 1.75; margin-bottom: 16px;
+      max-width: 580px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-photo {
+      width: 100%; border-radius: 10px;
+      object-fit: cover; border: 1px solid var(--border);
+      aspect-ratio: 1/1;
+    }
+
+    /* HOW I WORK — the humanizing section */
+    .principles {
+      display: grid; gap: 0;
+      border-top: 1px solid var(--border);
+      margin-top: 36px; padding-top: 28px;
+    }
+    .principle {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .principle:last-child { border-bottom: none; }
+    .principle-label {
+      color: var(--text-3); font-family: var(--mono);
+      font-size: 0.78rem; letter-spacing: 0.01em;
+      padding-top: 1px;
+    }
+    .principle-text { color: var(--text-2); line-height: 1.6; }
+
+    /* CONTACT */
+    .contact-block {
+      max-width: 480px;
+    }
+    .contact-block p {
+      font-size: 0.975rem; color: var(--text-2);
+      line-height: 1.7; margin-bottom: 24px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 8px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.9rem; color: var(--text-2);
+      transition: color 0.15s;
+    }
+    .contact-link:hover { color: var(--accent); }
+    .contact-link-label {
+      font-family: var(--mono);
+      font-size: 0.75rem; color: var(--text-3);
+      width: 64px; flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 0 48px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px;
+      font-size: 0.8rem; color: var(--text-3);
+      font-family: var(--mono);
+    }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ── HAMBURGER BUTTON ── */
+    .menu-btn {
+      display: none;
+      width: 36px; height: 36px;
+      align-items: center; justify-content: center;
+      border-radius: 6px; border: 1px solid var(--border);
+      background: var(--bg-2); color: var(--text-3);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .menu-btn svg { width: 18px; height: 18px; }
+    .menu-btn .bar { transition: transform 0.2s, opacity 0.2s; }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px 20px;
+      flex-direction: column; gap: 4px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 0.95rem; color: var(--text-2);
+      padding: 10px 12px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .mobile-nav a:hover { background: var(--bg-2); color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .hero-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .hero-layout > div:last-child {
+        order: -1;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .about-layout { grid-template-columns: 1fr; gap: 0; }
+      .hero-photo { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto; display: block; }
+      .about-photo { display: none; }
+      .exp-item { grid-template-columns: 1fr; gap: 4px; }
+      .work-cols { grid-template-columns: 1fr; }
+      .skill-row { grid-template-columns: 1fr; gap: 4px; }
+      .principle { grid-template-columns: 1fr; gap: 4px; }
+      .hero-stats { flex-wrap: wrap; gap: 14px; }
+      .hero-stat { border-right: none; padding-right: 0; margin-right: 0; }
+      .nav-links { display: none; }
+      .menu-btn { display: flex; }
+      .work-right { flex-direction: column; align-items: flex-end; gap: 4px; }
+    }
+
+    @media (max-width: 520px) {
+      .container, .nav-inner, .footer-inner { padding-left: 16px; padding-right: 16px; }
+      .hero { padding: 40px 0 36px; }
+      section { padding: 36px 0; }
+      .hero-name { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+      .work-toggle { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .work-right { flex-direction: row; align-items: center; gap: 8px; align-self: flex-start; }
+      .work-summary { font-size: 0.82rem; }
+      .exp-copy { font-size: 0.84rem; }
+      .contact-link-label { width: 52px; font-size: 0.7rem; }
+      .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+      .edu-row { flex-direction: column; gap: 6px; }
+    }
+
+    @media (max-width: 380px) {
+      .container, .nav-inner, .footer-inner { padding-left: 12px; padding-right: 12px; }
+      .hero-name { font-size: 1.55rem; }
+    }
+	   #chess { padding-top: 56px; padding-bottom: 72px; border-top: 1px solid var(--border);  }
+
+    .chess-block {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 680px;
+    }
+
+    .chess-intro p {
+	  color: var(--text-2);
+	  font-size: 1rem;
+	  line-height: 1.65;
+	}
+
+    .chess-intro strong { color: var(--text); font-weight: 600; }
+
+    .chess-opening {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .chess-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .chess-btn {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .chess-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .chess-link {
+	  font-size: 0.9rem;
+	  color: var(--text-3);
+	  text-decoration: none;
+	  border-bottom: 1px solid var(--border);
+	  padding-bottom: 1px;
+	  transition: color 0.15s, border-color 0.15s;
+	}
+
+    .chess-link:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav" role="banner">
+    <div class="nav-inner">
+      <a class="brand" href="#top">Surya Partap Singh</a>
+      <div class="nav-right">
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#education">Education</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="#chess">Chess</a>
+        </nav>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle color theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line class="bar bar1" x1="3" y1="6" x2="21" y2="6"/>
+            <line class="bar bar2" x1="3" y1="12" x2="21" y2="12"/>
+            <line class="bar bar3" x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile nav drawer -->
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+      <a href="#work" onclick="closeMobileNav()">Work</a>
+      <a href="#experience" onclick="closeMobileNav()">Experience</a>
+      <a href="#education" onclick="closeMobileNav()">Education</a>
+      <a href="#about" onclick="closeMobileNav()">About</a>
+      <a href="#contact" onclick="closeMobileNav()">Contact</a>
+      <a href="#chess" onclick="closeMobileNav()">Chess</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-layout">
+
+          <div class="fade-in">
+            <h1 class="hero-name">Surya Partap<br>Singh</h1>
+            <div class="hero-title">Senior Data Engineer &nbsp;·&nbsp; Dallas, TX</div>
+
+            <p class="hero-intro">
+              I build data platforms for healthcare and enterprise environments — the kind
+              where stale data or a broken pipeline has real consequences.
+            </p>
+            <p class="hero-detail">
+              My work over the past five years has centered on Databricks lakehouse architecture,
+              PySpark pipelines, and the quality and observability systems that keep
+              production data trustworthy at scale.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+              <a class="btn btn-outline" href="https://linkedin.com/in/surya6032/" target="_blank" rel="noopener">LinkedIn</a>
+              <a class="btn btn-outline" href="https://github.com/Surya6032" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn btn-outline" href="mailto:psurya.924@gmail.com">Email</a>
+            </div>
+
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-val">98%</div>
+                <div class="hero-stat-label">latency reduction</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-val">+30%</div>
+                <div class="hero-stat-label">pipeline throughput</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-val">99%+</div>
+                <div class="hero-stat-label">pipeline SLA</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-val">5+ yrs</div>
+                <div class="hero-stat-label">production data eng</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fade-in" style="transition-delay: 0.1s">
+            <img class="hero-photo" src="profile.jpeg" alt="Surya Partap Singh" />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="container">
+        <div class="section-label fade-in">Stack</div>
+        <div class="skills-table fade-in">
+          <div class="skill-row">
+            <div class="skill-cat">Core platform</div>
+            <div class="skill-items">Databricks, Delta Lake, Apache Spark, PySpark, Spark SQL</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-cat">Cloud &amp; infra</div>
+            <div class="skill-items">Azure (Data Lake, ADF, Blob, SQL), Amazon S3, ARM Templates, Docker</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-cat">Orchestration</div>
+            <div class="skill-items">Databricks Workflows, Azure Data Factory, Airflow</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-cat">Quality &amp; CI/CD</div>
+            <div class="skill-items">Great Expectations, schema evolution, anomaly detection, GitHub Actions, Azure DevOps</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-cat">Languages</div>
+            <div class="skill-items">Python, SQL, C++</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+    <section id="work">
+      <div class="container">
+        <div class="section-label fade-in">Selected work</div>
+
+        <div class="work-list fade-in">
+
+          <!-- PROJECT 1: Medallion lakehouse -->
+          <article class="work-item open">
+            <button class="work-toggle" aria-expanded="true">
+              <div class="work-left">
+                <div class="work-title">Medallion Lakehouse Platform</div>
+                <div class="work-summary">Unified clinical, financial, and pharmacy data into a single, governed lakehouse — built to be reusable, not just functional.</div>
+              </div>
+              <div class="work-right">
+                <span class="work-metric">5–10 TB/day</span>
+                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </button>
+            <div class="work-body">
+              <div class="work-body-inner">
+                <div class="work-body-content">
+                  <p class="work-detail-text">
+                    The platform grew out of a real problem: multiple teams were maintaining their own copies of
+                    the same source data, each with slightly different logic. The goal was to consolidate that into
+                    a Bronze/Silver/Gold lakehouse where the transformation rules lived once and the outputs
+                    could be trusted by analytics, reporting, and data science downstream.
+                  </p>
+                  <ul class="work-points">
+                    <li>Defined clear layer contracts — raw ingestion, conformed schemas, business-ready gold tables — so teams knew exactly what to expect at each stage.</li>
+                    <li>Used Delta Change Data Feed throughout to avoid full-table reprocessing; incremental by default.</li>
+                    <li>Standardized ingestion patterns across 10+ upstream systems — new sources now follow a documented template rather than being built from scratch.</li>
+                    <li>Cut time-to-insight for analytics and reporting teams by 50%.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 2: Financial reporting — different inner layout -->
+          <article class="work-item">
+            <button class="work-toggle" aria-expanded="false">
+              <div class="work-left">
+                <div class="work-title">Financial Reporting Pipeline</div>
+                <div class="work-summary">Rebuilt a nightly batch job into an incremental, near-real-time workflow so finance and leadership could stop working with yesterday's numbers.</div>
+              </div>
+              <div class="work-right">
+                <span class="work-metric">24 h → 15 min</span>
+                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </button>
+            <div class="work-body">
+              <div class="work-body-inner">
+                <div class="work-body-content">
+                  <div class="work-cols">
+                    <div>
+                      <div class="work-col-label">Problem</div>
+                      <div class="work-col-text">The batch pipeline completed around 2am. By the time finance opened their dashboards, the data was already 6–8 hours old and decisions were being made on stale numbers.</div>
+                    </div>
+                    <div>
+                      <div class="work-col-label">Approach</div>
+                      <div class="work-col-text">Replaced the full-refresh logic with Delta CDF-based incremental processing and Spark Structured Streaming. Ran a parallel validation period before decommissioning the old job.</div>
+                    </div>
+                  </div>
+                  <ul class="work-points">
+                    <li>Eliminated full-table scans — only changed records flow through on each run.</li>
+                    <li>Added monitoring, retry logic, and alerting so the new pipeline is easier to operate than the old one.</li>
+                    <li>Reporting latency went from 24 hours to under 15 minutes.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- PROJECT 3: Data quality — plain prose, no bullets -->
+          <article class="work-item">
+            <button class="work-toggle" aria-expanded="false">
+              <div class="work-left">
+                <div class="work-title">Data Quality &amp; Observability</div>
+                <div class="work-summary">Built automated quality controls into the platform so issues get caught before they reach downstream consumers — not after.</div>
+              </div>
+              <div class="work-right">
+                <span class="work-metric">−35% incidents</span>
+                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </button>
+            <div class="work-body">
+              <div class="work-body-inner">
+                <div class="work-body-content">
+                  <p class="work-detail-text">
+                    The trigger was a pattern of incidents where downstream teams would discover data problems
+                    hours after the fact. Schema drift, late-arriving data, sudden volume drops — all of them
+                    surfacing in dashboards rather than at the pipeline boundary where they could be caught early.
+                  </p>
+                  <p class="work-detail-text">
+                    I implemented Great Expectations checks and anomaly detection monitors at each medallion
+                    layer, integrated quality gates into CI/CD so bad data can't be deployed, and built freshness
+                    and volume monitors that alert before consumers notice an issue. Data incidents dropped 35%.
+                    More importantly, teams stopped treating shared datasets as unreliable.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-label fade-in">Experience</div>
+        <div class="exp-list fade-in">
+
+          <div class="exp-item">
+            <div class="exp-date">Feb 2023<br>— Present</div>
+            <div>
+              <div class="exp-role">Senior Data Engineer, Data Platform</div>
+              <div class="exp-company">Cencora · Dallas, TX</div>
+              <ul class="exp-bullets">
+                <li>Designed and scaled a Databricks medallion lakehouse unifying clinical, financial, and pharmacy data — 50% reduction in time-to-insight.</li>
+                <li>Improved end-to-end pipeline throughput by 30% through targeted Spark tuning: partitioning, shuffle behavior, join strategies, cluster config.</li>
+                <li>Reduced financial reporting latency from 24 hours to 15 minutes using Delta CDF and Spark Structured Streaming.</li>
+                <li>Built OCR-driven ingestion pipelines for unstructured patient documents, enabling downstream clinical analytics and ML workflows.</li>
+                <li>Reduced data incidents by 35% with Great Expectations quality controls and anomaly detection integrated as deployment gates.</li>
+                <li>Cut deployment time by 25% through CI/CD automation via GitHub Actions, Azure DevOps, and ARM Templates.</li>
+                <li>Reduced new data source onboarding time by 40% through reusable ingestion and transformation frameworks.</li>
+                <li>Mentored 3–5 engineers on ETL design, Spark optimization, and platform best practices.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-date">May 2021<br>— Feb 2023</div>
+            <div>
+              <div class="exp-role">Data Engineer (Contract)</div>
+              <div class="exp-company">Cencora · Dallas, TX</div>
+              <ul class="exp-bullets">
+                <li>Built and supported production ETL pipelines on Databricks, Azure Data Factory, and PySpark for large-scale clinical, pharmacy, and financial datasets.</li>
+                <li>Designed canonical, single-source-of-truth tables that standardized disparate source systems and eliminated 3+ redundant dataset copies across business units.</li>
+                <li>Optimized large-scale Spark transformations using broadcast joins, predicate pushdown, and partition-aware reads to reduce compute costs.</li>
+                <li>Automated ETL workflows through Databricks Jobs — achieving 99%+ pipeline success rates and consistent SLA adherence.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-item">
+            <div class="exp-date">Feb 2021<br>— May 2021</div>
+            <div>
+              <div class="exp-role">Data Engineer</div>
+              <div class="exp-company">Fuge Technologies · Dallas–Fort Worth, TX</div>
+              <ul class="exp-bullets">
+                <li>Built Hadoop and Hive-based batch pipelines, applying partition pruning, bucketing, and execution plan analysis to improve distributed query performance.</li>
+                <li>Developed Azure Data Lake ingestion pipelines via ADF — incremental loads, schema evolution handling, and downstream validation checks.</li>
+              </ul>
+            </div>
+          </div>
+
+                  </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="container">
+        <div class="section-label fade-in">Education</div>
+        <div class="edu-block fade-in">
+          <div class="edu-row">
+            <div class="edu-left">
+              <div class="edu-degree">B.S. Computer Science</div>
+              <div class="edu-school">University of North Alabama &middot; Florence, AL</div>
+              <div class="edu-courses">Distributed Systems &middot; Database Management &middot; Data Structures &amp; Algorithms &middot; Cloud Computing &middot; Machine Learning</div>
+            </div>
+            <div class="edu-date">Dec 2020</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-label fade-in">About</div>
+        <div class="about-layout fade-in">
+          <div class="about-text">
+            <p>
+              I'm a Senior Data Engineer based in Dallas. Most of my work has been at Cencora,
+              where I've spent the last four years building and maintaining data infrastructure
+              for healthcare and pharmaceutical operations — environments where a broken pipeline
+              or bad data has real downstream consequences.
+            </p>
+            <p>
+              I care about building systems that are maintainable and usable for the people
+              who inherit them. That means clear documentation, consistent patterns, and a
+              preference for boring reliability over clever solutions. I also mentor engineers
+              on the team — not just on technical specifics but on how to think about tradeoffs
+              in production system design.
+            </p>
+            <p>
+              Outside of work: chess, sim racing, 3D printing, tennis, cricket.
+            </p>
+
+            <div class="principles">
+              <div class="principle">
+                <div class="principle-label">Correctness first</div>
+                <div class="principle-text">Performance is easier to fix than wrong data in a dashboard someone has been trusting for six months.</div>
+              </div>
+              <div class="principle">
+                <div class="principle-label">Build for the next person</div>
+                <div class="principle-text">If I leave a project, it should be obvious how it works and straightforward to change.</div>
+              </div>
+              <div class="principle">
+                <div class="principle-label">Observability is not optional</div>
+                <div class="principle-text">If you can't tell when something is wrong, the system isn't finished.</div>
+              </div>
+              <div class="principle">
+                <div class="principle-label">Teams over tools</div>
+                <div class="principle-text">The best platform is one people actually use and trust — which usually has more to do with clarity than technology.</div>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-label fade-in">Contact</div>
+        <div class="contact-block fade-in">
+          <p>
+            Open to senior data engineering, staff, and architecture-focused roles.
+            Happy to talk if it sounds like a good fit.
+          </p>
+          <div class="contact-links">
+            <a class="contact-link" href="mailto:psurya.924@gmail.com">
+              <span class="contact-link-label">Email</span>
+              psurya.924@gmail.com
+            </a>
+            <a class="contact-link" href="https://linkedin.com/in/surya6032/" target="_blank" rel="noopener">
+              <span class="contact-link-label">LinkedIn</span>
+              linkedin.com/in/surya6032
+            </a>
+            <a class="contact-link" href="https://github.com/Surya6032" target="_blank" rel="noopener">
+              <span class="contact-link-label">GitHub</span>
+              github.com/Surya6032
+            </a>
+            <a class="contact-link" href="resume.pdf" target="_blank" rel="noopener">
+              <span class="contact-link-label">Resume</span>
+              Download PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  
+  <!-- ═══════════════════════════════════════════════════════ CHESS SECTION -->
+
+    <section id="chess">
+  <div class="container">
+    <p class="section-label">Chess</p>
+    <div class="chess-block">
+      <div class="chess-intro">
+        <p>
+          Outside of work, I enjoy chess — mostly for the strategy, patience,
+          and pattern recognition. It’s one of those hobbies that feels simple
+          on the surface and endlessly deep once you spend time with it.
+        </p>
+      </div>
+      <div class="chess-actions">
+        <a href="chess.html" target="_blank" rel="noopener" class="chess-btn">
+          Play my bot →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+      <span>Surya Partap Singh</span>
+      <span>Dallas, TX &nbsp;·&nbsp; Remote-friendly</span>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById("themeToggle");
+      const stored = localStorage.getItem("theme");
+      const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      root.setAttribute("data-theme", stored || preferred);
+
+      btn.addEventListener("click", () => {
+        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+    })();
+
+    // Work accordion
+    (function () {
+      const items = document.querySelectorAll(".work-item");
+      items.forEach(item => {
+        const btn = item.querySelector(".work-toggle");
+        btn.addEventListener("click", () => {
+          const isOpen = item.classList.contains("open");
+          items.forEach(i => {
+            i.classList.remove("open");
+            i.querySelector(".work-toggle").setAttribute("aria-expanded", "false");
+          });
+          if (!isOpen) {
+            item.classList.add("open");
+            btn.setAttribute("aria-expanded", "true");
+          }
+        });
+      });
+    })();
+
+    // Fade-in on scroll
+    (function () {
+      const els = document.querySelectorAll(".fade-in");
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+      }, { threshold: 0.08 });
+      els.forEach(el => obs.observe(el));
+    })();
+  
+
+    
+  
+  // ── Mobile nav ──
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Close drawer on outside click
+  document.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !mobileNav.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
+</script>
+
+</body>
+</html>
