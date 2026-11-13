@@ -1,1090 +1,776 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Surya Partap Singh — Senior Data Engineer</title>
-  <meta name="description" content="Senior Data Engineer in Dallas, TX. Databricks, PySpark, Azure, Delta Lake — building reliable data platforms for healthcare and enterprise." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <meta name="description" content="Senior Data Engineer in Dallas, TX. Five years building the Databricks lakehouse, PySpark pipelines and data quality systems that healthcare teams at Cencora report from.">
+  <meta name="author" content="Surya Partap Singh">
+  <link rel="canonical" href="https://surya6032.github.io/portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://surya6032.github.io/portfolio/">
+  <meta property="og:title" content="Surya Partap Singh — Senior Data Engineer">
+  <meta property="og:description" content="Data platforms for healthcare, built so nobody has to wonder whether the number is right. Databricks, Delta Lake, PySpark, Azure.">
+  <meta property="og:image" content="https://surya6032.github.io/portfolio/profile.jpeg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Surya Partap Singh — Senior Data Engineer">
+  <meta name="twitter:description" content="Data platforms for healthcare, built so nobody has to wonder whether the number is right.">
+  <meta name="twitter:image" content="https://surya6032.github.io/portfolio/profile.jpeg">
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
+
   <style>
+    /* ───────── Tokens ───────── */
     :root {
-      --bg:        #f8f7f4;
-      --bg-2:      #f0ede8;
-      --text:      #1c1a17;
-      --text-2:    #4c4840;
-      --text-3:    #8a8278;
-      --border:    #e2ddd7;
-      --accent:    #3a7ca5;
-      --accent-2:  #d4e8f0;
-      --max:       860px;
-      --mono:      "JetBrains Mono", "Courier New", monospace;
+      color-scheme: light;
+      --ground:   #f0efea;
+      --ground-2: #e6e4dd;
+      --panel:    #f8f7f3;
+      --ink:      #15171c;
+      --ink-2:    #4b4e57;
+      --ink-3:    #7d8089;
+      --rule:     #d2cfc6;
+      --cobalt:   #1b2fe8;
+      --cobalt-2: #dfe3ff;
+      --bronze:   #b26d3a;
+      --silver:   #7f8a95;
+      --gold:     #c39616;
+      --bad:      #c0392b;
+      --bad-2:    #fbe6e3;
+      --font: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --page: 1200px;
+      --gutter: clamp(18px, 4vw, 48px);
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --ground: #121317; --ground-2: #1b1d23; --panel: #181a20;
+        --ink: #ecebe6; --ink-2: #b4b6bd; --ink-3: #7c7f88; --rule: #2d3038;
+        --cobalt: #8290ff; --cobalt-2: #1f2550;
+        --bronze: #d58d55; --silver: #a3adb7; --gold: #e2b43d;
+        --bad: #ff7b6e; --bad-2: #3a1f1c;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --ground: #121317; --ground-2: #1b1d23; --panel: #181a20;
+      --ink: #ecebe6; --ink-2: #b4b6bd; --ink-3: #7c7f88; --rule: #2d3038;
+      --cobalt: #8290ff; --cobalt-2: #1f2550;
+      --bronze: #d58d55; --silver: #a3adb7; --gold: #e2b43d;
+      --bad: #ff7b6e; --bad-2: #3a1f1c;
     }
 
-    [data-theme="dark"] {
-      --bg:        #151412;
-      --bg-2:      #1e1c19;
-      --text:      #edeae4;
-      --text-2:    #b0aa9f;
-      --text-3:    #6e6860;
-      --border:    #2c2924;
-      --accent:    #5ba3c9;
-      --accent-2:  #1a2e3a;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
+    /* ───────── Base ───────── */
+    *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 1rem;
-      transition: background 0.2s, color 0.2s;
+      font-family: var(--font); font-variation-settings: "opsz" 14, "wdth" 100;
+      font-size: 1.0625rem; line-height: 1.55; color: var(--ink); background: var(--ground);
       -webkit-font-smoothing: antialiased;
     }
-
-    a { color: inherit; text-decoration: none; }
+    body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--ground); z-index: 10; }
+    a { color: inherit; }
     img { display: block; max-width: 100%; }
-    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+    ul { list-style: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+    .wrap { max-width: var(--page); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-    .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+    h2 { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.6rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 700; font-variation-settings: "opsz" 64, "wdth" 92; margin-bottom: 8px; }
+    .section-lede { color: var(--ink-2); max-width: 56ch; margin-bottom: 36px; text-wrap: pretty; }
+    h3 { font-size: 1.3rem; letter-spacing: -0.02em; font-weight: 600; font-variation-settings: "opsz" 28; }
+    code, pre { font-family: var(--mono); }
 
-    /* NAV */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
-      backdrop-filter: blur(14px) saturate(150%);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .nav-inner {
-      max-width: var(--max); margin: 0 auto; padding: 0 32px;
-      height: 56px; display: flex; align-items: center;
-      justify-content: space-between;
-    }
-    .brand {
-      font-size: 0.875rem; font-weight: 500;
-      color: var(--text-2); letter-spacing: 0.01em;
-    }
-    .nav-right { display: flex; align-items: center; gap: 4px; }
-    .nav-links { display: flex; }
-    .nav-links a {
-      font-size: 0.85rem; color: var(--text-3);
-      padding: 6px 10px; border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
-    }
-    .nav-links a:hover { color: var(--text); background: var(--bg-2); }
-
-    .theme-btn {
-      width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-3); border: 1px solid var(--border);
-      background: var(--bg-2); margin-left: 8px;
-      transition: all 0.15s;
-    }
-    .theme-btn:hover { color: var(--text); border-color: var(--text-3); }
-    .theme-btn svg { width: 15px; height: 15px; }
-    .icon-sun { display: none; }
-    .icon-moon { display: block; }
-    [data-theme="dark"] .icon-sun { display: block; }
-    [data-theme="dark"] .icon-moon { display: none; }
-
-    /* HERO */
-    .hero { padding: 72px 0 60px; }
-
-    .hero-layout {
-      display: grid;
-      grid-template-columns: 1fr 200px;
-      gap: 48px;
-      align-items: start;
+    /* ───────── Header ───────── */
+    .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--ground); border-bottom: 1px solid var(--rule); }
+    .top .wrap { height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .top a { text-decoration: none; }
+    .mark { font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+    .top nav { display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+    .top nav::-webkit-scrollbar { display: none; }
+    .top nav a { padding: 8px 10px; color: var(--ink-2); font-size: 0.9375rem; white-space: nowrap; border-radius: 4px; }
+    .top nav a:hover { color: var(--ink); background: var(--ground-2); }
+    .top nav a.cta { margin-left: 6px; color: #fff; background: var(--cobalt); border-radius: 999px; padding: 7px 14px; font-weight: 600; }
+    .top nav a.cta:hover { filter: brightness(1.08); }
+    .toggle { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule); display: grid; place-items: center; color: var(--ink-2); }
+    .toggle:hover { color: var(--ink); border-color: var(--ink-3); }
+    .toggle svg { width: 15px; height: 15px; }
+    .toggle .sun { display: none; }
+    :root[data-theme="dark"] .toggle .sun { display: block; }
+    :root[data-theme="dark"] .toggle .moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .toggle .sun { display: block; }
+      :root:not([data-theme="light"]) .toggle .moon { display: none; }
     }
 
-    .hero-name {
-      font-size: clamp(2rem, 4.5vw, 2.9rem);
-      font-weight: 600;
-      letter-spacing: -0.035em;
-      line-height: 1.05;
-      margin-bottom: 6px;
-      color: var(--text);
+    /* ───────── Hero ───────── */
+    .hero { padding: clamp(40px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); overflow: hidden; }
+    .hero h1 {
+      font-size: clamp(3.4rem, 13.5vw, 12rem); line-height: 0.88; letter-spacing: -0.045em;
+      font-weight: 800; font-variation-settings: "opsz" 96, "wdth" 86; color: var(--cobalt); margin-left: -0.04em;
     }
+    .hero h1 span { display: block; }
+    .hero h1 .second { padding-left: 0.4em; }
+    .hero-bar { margin-top: clamp(24px, 3.5vw, 44px); border-top: 2px solid var(--ink); padding-top: 22px; display: grid; grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr); gap: 24px clamp(24px, 4vw, 64px); }
+    .hero-meta { font-size: 0.9375rem; color: var(--ink-2); line-height: 1.5; }
+    .hero-meta b { display: block; font-weight: 600; color: var(--ink); }
+    .hero-meta p { margin-bottom: 14px; }
+    .portrait { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--rule); background: var(--cobalt); color: #fff; display: grid; place-items: center; font-weight: 700; margin-bottom: 18px; }
+    .portrait img { width: 100%; height: 100%; object-fit: cover; }
+    .portrait span { display: none; }
+    .portrait[data-fallback] img { display: none; }
+    .portrait[data-fallback] span { display: block; }
+    .lede { font-size: clamp(1.35rem, 1rem + 1.5vw, 2.05rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 400; font-variation-settings: "opsz" 40, "wdth" 96; max-width: 27ch; text-wrap: pretty; margin-bottom: 20px; }
+    .sub { color: var(--ink-2); max-width: 58ch; margin-bottom: 28px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border: 1.5px solid var(--ink); border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 0.9375rem; }
+    .btn:hover { background: var(--ink); color: var(--ground); }
+    .btn.fill { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
+    .btn.fill:hover { filter: brightness(1.08); }
 
-    .hero-title {
-      font-size: 0.95rem;
-      color: var(--text-3);
-      margin-bottom: 28px;
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      letter-spacing: 0.01em;
-    }
+    /* ───────── Demo: a working model of the pipeline ───────── */
+    .demo { border-top: 2px solid var(--ink); padding: clamp(40px, 5vw, 64px) 0; }
+    .demo-head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px clamp(24px, 4vw, 64px); align-items: end; margin-bottom: 24px; }
+    .demo-head p { color: var(--ink-2); max-width: 58ch; text-wrap: pretty; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .controls button { height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--ink); font-weight: 600; font-size: 0.9375rem; background: var(--panel); }
+    .controls button:hover { background: var(--ink); color: var(--ground); }
+    .controls button.primary { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
+    .controls button.primary:hover { filter: brightness(1.08); }
+    .controls button.quiet { border-color: var(--rule); color: var(--ink-2); }
+    .controls button.quiet:hover { background: var(--ground-2); color: var(--ink); }
 
-    .hero-intro {
-      font-size: 1.05rem;
-      color: var(--text-2);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 10px;
-    }
+    .pipeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .layer { background: var(--panel); border: 1px solid var(--rule); border-top: 4px solid var(--layer); border-radius: 6px; padding: 14px 16px 16px; min-width: 0; }
+    .layer.bronze { --layer: var(--bronze); }
+    .layer.silver { --layer: var(--silver); }
+    .layer.gold   { --layer: var(--gold); }
+    .layer-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .layer-head h3 { font-size: 1.05rem; }
+    .layer-head span { color: var(--ink-3); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+    .layer-sub { color: var(--ink-3); font-size: 0.875rem; margin-bottom: 12px; }
+    .rows { font-family: var(--mono); font-size: 0.78rem; line-height: 1.5; display: grid; gap: 2px; min-height: 200px; }
+    .row { display: grid; grid-template-columns: 3.2em 4.2em 1fr; gap: 10px; padding: 3px 6px; border-radius: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
+    .row b { font-weight: 500; color: var(--ink); }
+    .row.new { background: var(--cobalt-2); }
+    .row.changed { background: var(--cobalt-2); }
+    .row.bad { color: var(--bad); }
+    .row.bad b { color: var(--bad); }
+    .row.ghost { color: var(--ink-3); }
+    .agg { display: grid; gap: 6px; font-variant-numeric: tabular-nums; }
+    .agg div { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 6px; border-radius: 3px; border-bottom: 1px solid var(--rule); }
+    .agg div:last-child { border-bottom: 0; }
+    .agg strong { font-size: 1.45rem; letter-spacing: -0.03em; font-weight: 700; }
+    .agg div.changed { background: var(--cobalt-2); }
+    .quarantine { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--rule); }
+    .quarantine h4 { font-size: 0.875rem; font-weight: 600; color: var(--bad); margin-bottom: 6px; }
+    .quarantine ul { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-2); display: grid; gap: 4px; }
+    .quarantine li { padding-left: 10px; position: relative; }
+    .quarantine li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; background: var(--bad); }
+    .quarantine li b { color: var(--ink); font-weight: 500; }
+    .quarantine li:empty { display: none; }
+    .quarantine .none { color: var(--ink-3); }
+    .runlog { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; }
+    .runlog p { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; }
+    .runlog p b { color: var(--ink); font-weight: 500; }
+    .runlog .vs { font-size: 0.9375rem; color: var(--ink-2); }
+    .runlog .vs strong { color: var(--cobalt); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; }
+    .demo-foot { margin-top: 14px; color: var(--ink-3); font-size: 0.9375rem; max-width: 70ch; }
 
-    .hero-detail {
-      font-size: 0.93rem;
-      color: var(--text-3);
-      max-width: 540px;
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
+    /* ───────── Work ───────── */
+    .section { border-top: 2px solid var(--ink); padding: clamp(48px, 6vw, 88px) 0; }
+    .case { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(0, 2.6fr); gap: 20px clamp(24px, 4vw, 64px); padding: 36px 0; border-top: 1px solid var(--rule); }
+    .case:last-child { padding-bottom: 0; }
+    .figure { font-size: clamp(2.8rem, 1.6rem + 4.2vw, 4.6rem); line-height: 0.95; letter-spacing: -0.045em; font-weight: 800; font-variation-settings: "opsz" 96, "wdth" 85; color: var(--ink); }
+    .figure s { color: var(--ink-3); font-weight: 500; text-decoration-thickness: 0.06em; text-decoration-color: var(--cobalt); margin-right: 0.18em; }
+    .figure em { font-style: normal; color: var(--cobalt); }
+    .figure-label { color: var(--ink-2); margin-top: 8px; font-size: 1rem; max-width: 26ch; text-wrap: pretty; }
+    .case h3 { margin-bottom: 10px; }
+    .case p { color: var(--ink-2); max-width: 62ch; }
+    .case p + p { margin-top: 12px; }
+    .case p b { color: var(--ink); font-weight: 600; }
+    .case ul { display: grid; gap: 8px; margin-top: 14px; max-width: 62ch; }
+    .case li { color: var(--ink-2); padding-left: 18px; position: relative; }
+    .case li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 8px; height: 2px; background: var(--cobalt); }
+    .case pre { margin-top: 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; font-size: 0.8rem; line-height: 1.55; color: var(--ink-2); overflow-x: auto; max-width: 62ch; }
+    .case pre .k { color: var(--cobalt); }
+    .case pre .s { color: var(--bronze); }
+    .case pre .c { color: var(--ink-3); }
+    .latency { margin-top: 18px; display: grid; gap: 10px; max-width: 62ch; }
+    .latency div { display: grid; grid-template-columns: 5em 1fr auto; gap: 12px; align-items: center; font-size: 0.9375rem; color: var(--ink-2); }
+    .latency i { display: block; height: 10px; background: var(--ink-3); border-radius: 2px; }
+    .latency div:last-child i { background: var(--cobalt); }
+    .latency b { font-variant-numeric: tabular-nums; color: var(--ink); }
+    .gates { margin-top: 18px; max-width: 62ch; border-top: 1px solid var(--rule); }
+    .gates div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; }
+    .gates div span:first-child { color: var(--ink); font-weight: 500; }
+    .gates div span:last-child { color: var(--ink-2); }
 
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+    /* ───────── Experience ───────── */
+    .job { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(0, 2.6fr); gap: 8px clamp(24px, 4vw, 64px); padding: 26px 0; border-top: 1px solid var(--rule); }
+    .job-when { font-weight: 600; letter-spacing: -0.01em; }
+    .job-when small { display: block; font-weight: 400; color: var(--ink-3); font-size: 0.9375rem; }
+    .job h3 { font-size: 1.2rem; }
+    .job .where { color: var(--ink-2); margin-bottom: 10px; }
+    .job .note { color: var(--ink-2); margin-bottom: 10px; max-width: 62ch; }
+    .job ul { display: grid; gap: 6px; max-width: 64ch; }
+    .job li { color: var(--ink-2); padding-left: 18px; position: relative; font-size: 1rem; }
+    .job li::before { content: ""; position: absolute; left: 0; top: 0.74em; width: 8px; height: 2px; background: var(--rule); }
 
-    .btn {
-      display: inline-flex; align-items: center;
-      height: 38px; padding: 0 18px;
-      border-radius: 99px; font-size: 0.85rem; font-weight: 500;
-      transition: all 0.15s;
-    }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-outline {
-      border: 1px solid var(--border);
-      color: var(--text-2);
-      background: transparent;
-    }
-    .btn-outline:hover { border-color: var(--text-3); color: var(--text); background: var(--bg-2); }
+    /* ───────── Stack ───────── */
+    .stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 40px); }
+    .stack > div { border-top: 2px solid var(--ink); padding-top: 14px; }
+    .stack h3 { font-size: 1.05rem; margin-bottom: 2px; }
+    .stack .how { color: var(--ink-3); font-size: 0.9375rem; margin-bottom: 14px; }
+    .stack ul { display: grid; gap: 4px; }
+    .stack li { color: var(--ink-2); padding: 6px 0; border-top: 1px solid var(--rule); }
 
-    .hero-stats {
-      display: flex; flex-wrap: wrap; gap: 0;
-      border-top: 1px solid var(--border);
-      padding-top: 20px;
-    }
-    .hero-stat {
-      padding-right: 28px;
-      margin-right: 28px;
-      border-right: 1px solid var(--border);
-    }
-    .hero-stat:last-child { border-right: none; margin-right: 0; }
-    .hero-stat-val {
-      font-size: 1.4rem; font-weight: 600;
-      letter-spacing: -0.03em; color: var(--text);
-      line-height: 1.2; margin-bottom: 2px;
-    }
-    .hero-stat-label {
-      font-size: 0.78rem; color: var(--text-3);
-      line-height: 1.4; max-width: 100px;
-    }
+    /* ───────── About ───────── */
+    .about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px clamp(24px, 4vw, 64px); }
+    .about p { color: var(--ink-2); max-width: 58ch; }
+    .about p + p { margin-top: 14px; }
+    .principles > div { padding: 14px 0; border-top: 1px solid var(--rule); }
+    .principles > div:last-child { border-bottom: 1px solid var(--rule); }
+    .principles h3 { font-size: 1.1rem; margin-bottom: 2px; }
+    .principles p { font-size: 1rem; }
+    .chess { margin-top: 44px; display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px clamp(24px, 3vw, 48px); align-items: start; }
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: 120px; aspect-ratio: 1; border: 1.5px solid var(--ink); }
+    .board i { background: var(--panel); }
+    .board i:nth-child(16n+2), .board i:nth-child(16n+4), .board i:nth-child(16n+6), .board i:nth-child(16n+8),
+    .board i:nth-child(16n+9), .board i:nth-child(16n+11), .board i:nth-child(16n+13), .board i:nth-child(16n+15) { background: var(--cobalt); }
+    .chess h3 { margin-bottom: 6px; }
+    .chess p { color: var(--ink-2); max-width: 62ch; }
+    .chess a { color: var(--cobalt); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 
-    /* PROFILE IMAGE — no card, no shadow, no hover zoom */
-    .hero-photo {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 14px;
-      object-fit: cover;
-      border: 1px solid var(--border);
-      display: block;
-      margin-top: 8px;
-    }
+    /* ───────── Contact ───────── */
+    .contact .intro { color: var(--ink-2); max-width: 54ch; margin-bottom: 28px; font-size: 1.125rem; }
+    .mail { display: block; text-decoration: none; color: var(--cobalt); font-size: clamp(1.5rem, 0.6rem + 5vw, 5rem); line-height: 1; letter-spacing: -0.04em; font-weight: 800; font-variation-settings: "opsz" 96, "wdth" 86; word-break: break-all; margin-bottom: 28px; }
+    .mail:hover { text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.08em; }
+    .links { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+    .links a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; }
+    .links a:hover { text-decoration-color: var(--cobalt); }
+    footer { border-top: 1px solid var(--rule); padding: 20px 0 36px; color: var(--ink-3); font-size: 0.9375rem; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
-    /* DIVIDER */
-    .divider {
-      border: none; border-top: 1px solid var(--border);
-      margin: 0;
+    /* ───────── Responsive ───────── */
+    @media (max-width: 960px) {
+      .pipeline { grid-template-columns: 1fr; }
+      .rows { min-height: 0; }
+      .stack { grid-template-columns: 1fr; gap: 28px; }
     }
-
-    /* SECTIONS */
-    section { padding: 52px 0; }
-    section + section { border-top: 1px solid var(--border); }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.72rem; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--text-3);
-      margin-bottom: 28px;
+    @media (max-width: 760px) {
+      .hero-bar, .demo-head, .case, .job, .about { grid-template-columns: 1fr; }
+      .hero-bar { gap: 20px; }
+      .hero-meta p { margin-bottom: 8px; }
+      .controls { justify-content: flex-start; }
+      .figure-label { max-width: 46ch; }
+      .runlog { grid-template-columns: 1fr; }
+      .chess { grid-template-columns: 1fr; }
     }
-
-    h2 {
-      font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-      font-weight: 600; letter-spacing: -0.025em;
-      color: var(--text); margin-bottom: 20px;
-    }
-
-    /* SKILLS — plain text clusters, no pills */
-    .skills-table { display: grid; gap: 0; }
-
-    .skill-row {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 20px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: baseline;
-    }
-    .skill-row:first-child { border-top: 1px solid var(--border); }
-
-    .skill-cat {
-      font-size: 0.8rem; font-family: var(--mono);
-      color: var(--text-3); letter-spacing: 0.02em;
-      line-height: 1.6;
-    }
-
-    .skill-items {
-      font-size: 0.92rem; color: var(--text-2);
-      line-height: 1.6;
-    }
-
-    /* SELECTED WORK */
-    .work-list { display: grid; gap: 0; }
-
-    .work-item {
-      border-top: 1px solid var(--border);
-    }
-    .work-item:last-child { border-bottom: 1px solid var(--border); }
-
-    .work-toggle {
-      width: 100%; text-align: left; background: transparent;
-      padding: 24px 0;
-      display: flex; justify-content: space-between; align-items: baseline;
-      gap: 20px;
-      transition: none;
-    }
-    .work-toggle:hover .work-title { color: var(--accent); }
-
-    .work-left { min-width: 0; }
-
-    .work-title {
-      font-size: 1.05rem; font-weight: 500;
-      letter-spacing: -0.02em; color: var(--text);
-      margin-bottom: 5px;
-      transition: color 0.15s;
-    }
-
-    .work-summary {
-      font-size: 0.875rem; color: var(--text-3);
-      line-height: 1.6; max-width: 560px;
-    }
-
-    .work-right {
-      display: flex; align-items: center; gap: 16px;
-      flex-shrink: 0;
-    }
-
-    .work-metric {
-      font-family: var(--mono);
-      font-size: 0.82rem; color: var(--accent);
-      white-space: nowrap;
-    }
-
-    .work-chevron {
-      width: 18px; height: 18px; flex-shrink: 0;
-      color: var(--text-3);
-      transition: transform 0.28s ease;
-    }
-    .work-item.open .work-chevron { transform: rotate(180deg); }
-
-    .work-body {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.32s ease;
-    }
-    .work-item.open .work-body { grid-template-rows: 1fr; }
-    .work-body-inner { overflow: hidden; }
-
-    .work-body-content {
-      padding-bottom: 28px;
-    }
-
-    /* Each project gets a slightly different inner layout */
-    .work-detail-text {
-      font-size: 0.9rem; color: var(--text-2);
-      line-height: 1.7; max-width: 640px;
-      margin-bottom: 16px;
-    }
-
-    .work-points {
-      display: grid; gap: 7px; margin-left: 0; padding-left: 0;
-      list-style: none;
-    }
-    .work-points li {
-      font-size: 0.875rem; color: var(--text-2);
-      line-height: 1.6; padding-left: 14px; position: relative;
-    }
-    .work-points li::before {
-      content: "";
-      position: absolute; left: 0; top: 0.68em;
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--accent);
-    }
-
-    /* For the two-col detail in project 2 */
-    .work-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 36px;
-      margin-bottom: 16px;
-    }
-    .work-col-label {
-      font-size: 0.75rem; font-family: var(--mono);
-      text-transform: uppercase; letter-spacing: 0.05em;
-      color: var(--text-3); margin-bottom: 5px;
-    }
-    .work-col-text {
-      font-size: 0.875rem; color: var(--text-2); line-height: 1.65;
-    }
-
-    /* EXPERIENCE */
-    .exp-list { display: grid; gap: 0; }
-
-    .exp-item {
-      display: grid;
-      grid-template-columns: 148px 1fr;
-      gap: 24px;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .exp-item:first-child { border-top: 1px solid var(--border); }
-    .exp-item.edu { opacity: 0.75; }
-
-    .exp-date {
-      font-family: var(--mono);
-      font-size: 0.75rem; color: var(--text-3);
-      line-height: 1.6; padding-top: 3px;
-    }
-
-    .exp-role {
-      font-size: 1rem; font-weight: 500;
-      letter-spacing: -0.02em; margin-bottom: 2px;
-    }
-    .exp-company {
-      font-size: 0.85rem; color: var(--text-3);
-      margin-bottom: 12px;
-    }
-    .exp-copy {
-      font-size: 0.875rem; color: var(--text-2);
-      line-height: 1.65; max-width: 580px;
-    }
-    .exp-bullets {
-      list-style: none; display: grid; gap: 6px; padding: 0;
-    }
-    .exp-bullets li {
-      font-size: 0.875rem; color: var(--text-2);
-      line-height: 1.65; padding-left: 14px; position: relative;
-    }
-    .exp-bullets li::before {
-      content: ""; position: absolute; left: 0; top: 0.68em;
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--border);
-    }
-
-    /* ABOUT */
-    .about-layout {
-      display: grid;
-      grid-template-columns: 1fr 160px;
-      gap: 48px;
-      align-items: start;
-    }
-    .about-text p {
-      font-size: 0.975rem; color: var(--text-2);
-      line-height: 1.75; margin-bottom: 16px;
-      max-width: 580px;
-    }
-    .about-text p:last-child { margin-bottom: 0; }
-    .about-photo {
-      width: 100%; border-radius: 10px;
-      object-fit: cover; border: 1px solid var(--border);
-      aspect-ratio: 1/1;
-    }
-
-    /* HOW I WORK — the humanizing section */
-    .principles {
-      display: grid; gap: 0;
-      border-top: 1px solid var(--border);
-      margin-top: 36px; padding-top: 28px;
-    }
-    .principle {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.875rem;
-    }
-    .principle:last-child { border-bottom: none; }
-    .principle-label {
-      color: var(--text-3); font-family: var(--mono);
-      font-size: 0.78rem; letter-spacing: 0.01em;
-      padding-top: 1px;
-    }
-    .principle-text { color: var(--text-2); line-height: 1.6; }
-
-    /* CONTACT */
-    .contact-block {
-      max-width: 480px;
-    }
-    .contact-block p {
-      font-size: 0.975rem; color: var(--text-2);
-      line-height: 1.7; margin-bottom: 24px;
-    }
-    .contact-links { display: flex; flex-direction: column; gap: 8px; }
-    .contact-link {
-      display: flex; align-items: center; gap: 12px;
-      font-size: 0.9rem; color: var(--text-2);
-      transition: color 0.15s;
-    }
-    .contact-link:hover { color: var(--accent); }
-    .contact-link-label {
-      font-family: var(--mono);
-      font-size: 0.75rem; color: var(--text-3);
-      width: 64px; flex-shrink: 0;
-      letter-spacing: 0.02em;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 28px 0 48px;
-      border-top: 1px solid var(--border);
-    }
-    .footer-inner {
-      max-width: var(--max); margin: 0 auto; padding: 0 32px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 8px;
-      font-size: 0.8rem; color: var(--text-3);
-      font-family: var(--mono);
-    }
-
-    /* FADE IN */
-    .fade-in {
-      opacity: 0; transform: translateY(14px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .fade-in.visible { opacity: 1; transform: none; }
-
-    /* ── HAMBURGER BUTTON ── */
-    .menu-btn {
-      display: none;
-      width: 36px; height: 36px;
-      align-items: center; justify-content: center;
-      border-radius: 6px; border: 1px solid var(--border);
-      background: var(--bg-2); color: var(--text-3);
-      cursor: pointer; flex-shrink: 0;
-    }
-    .menu-btn svg { width: 18px; height: 18px; }
-    .menu-btn .bar { transition: transform 0.2s, opacity 0.2s; }
-
-    /* Mobile nav drawer */
-    .mobile-nav {
-      display: none;
-      position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 20px 20px;
-      flex-direction: column; gap: 4px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      font-size: 0.95rem; color: var(--text-2);
-      padding: 10px 12px; border-radius: 8px;
-      transition: background 0.15s, color 0.15s;
-    }
-    .mobile-nav a:hover { background: var(--bg-2); color: var(--text); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 720px) {
-      .hero-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-      }
-      .hero-layout > div:last-child {
-        order: -1;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 20px;
-      }
-      .about-layout { grid-template-columns: 1fr; gap: 0; }
-      .hero-photo { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto; display: block; }
-      .about-photo { display: none; }
-      .exp-item { grid-template-columns: 1fr; gap: 4px; }
-      .work-cols { grid-template-columns: 1fr; }
-      .skill-row { grid-template-columns: 1fr; gap: 4px; }
-      .principle { grid-template-columns: 1fr; gap: 4px; }
-      .hero-stats { flex-wrap: wrap; gap: 14px; }
-      .hero-stat { border-right: none; padding-right: 0; margin-right: 0; }
-      .nav-links { display: none; }
-      .menu-btn { display: flex; }
-      .work-right { flex-direction: column; align-items: flex-end; gap: 4px; }
-    }
-
     @media (max-width: 520px) {
-      .container, .nav-inner, .footer-inner { padding-left: 16px; padding-right: 16px; }
-      .hero { padding: 40px 0 36px; }
-      section { padding: 36px 0; }
-      .hero-name { font-size: clamp(1.7rem, 7vw, 2.2rem); }
-      .work-toggle { flex-direction: column; align-items: flex-start; gap: 6px; }
-      .work-right { flex-direction: row; align-items: center; gap: 8px; align-self: flex-start; }
-      .work-summary { font-size: 0.82rem; }
-      .exp-copy { font-size: 0.84rem; }
-      .contact-link-label { width: 52px; font-size: 0.7rem; }
-      .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
-      .edu-row { flex-direction: column; gap: 6px; }
-    }
-
-    @media (max-width: 380px) {
-      .container, .nav-inner, .footer-inner { padding-left: 12px; padding-right: 12px; }
-      .hero-name { font-size: 1.55rem; }
-    }
-	   #chess { padding-top: 56px; padding-bottom: 72px; border-top: 1px solid var(--border);  }
-
-    .chess-block {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-width: 680px;
-    }
-
-    .chess-intro p {
-	  color: var(--text-2);
-	  font-size: 1rem;
-	  line-height: 1.65;
-	}
-
-    .chess-intro strong { color: var(--text); font-weight: 600; }
-
-    .chess-opening {
-      color: var(--accent);
-      font-style: italic;
-    }
-
-    .chess-actions {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .chess-btn {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid var(--accent);
-      padding: 8px 16px;
-      border-radius: 6px;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .chess-btn:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .chess-link {
-	  font-size: 0.9rem;
-	  color: var(--text-3);
-	  text-decoration: none;
-	  border-bottom: 1px solid var(--border);
-	  padding-bottom: 1px;
-	  transition: color 0.15s, border-color 0.15s;
-	}
-
-    .chess-link:hover {
-      color: var(--text);
-      border-color: var(--text);
+      body { font-size: 1rem; }
+      .row { grid-template-columns: 3.2em 4em 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <header class="nav" role="banner">
-    <div class="nav-inner">
-      <a class="brand" href="#top">Surya Partap Singh</a>
-      <div class="nav-right">
-        <nav class="nav-links" aria-label="Primary">
-          <a href="#work">Work</a>
-          <a href="#experience">Experience</a>
-          <a href="#education">Education</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-          <a href="#chess">Chess</a>
-        </nav>
-        <button class="theme-btn" id="themeToggle" aria-label="Toggle color theme">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        </button>
-        <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line class="bar bar1" x1="3" y1="6" x2="21" y2="6"/>
-            <line class="bar bar2" x1="3" y1="12" x2="21" y2="12"/>
-            <line class="bar bar3" x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    <!-- Mobile nav drawer -->
-    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
-      <a href="#work" onclick="closeMobileNav()">Work</a>
-      <a href="#experience" onclick="closeMobileNav()">Experience</a>
-      <a href="#education" onclick="closeMobileNav()">Education</a>
-      <a href="#about" onclick="closeMobileNav()">About</a>
-      <a href="#contact" onclick="closeMobileNav()">Contact</a>
-      <a href="#chess" onclick="closeMobileNav()">Chess</a>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#home">Surya Partap Singh</a>
+    <nav aria-label="Sections">
+      <a href="#demo">Pipeline</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#stack">Stack</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a class="cta" href="https://surya6032.github.io/portfolio/resume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
-  </header>
+    <button class="toggle" id="toggle" type="button" aria-label="Switch color theme">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
 
-  <main id="top">
+<main id="home">
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-layout">
-
-          <div class="fade-in">
-            <h1 class="hero-name">Surya Partap<br>Singh</h1>
-            <div class="hero-title">Senior Data Engineer &nbsp;·&nbsp; Dallas, TX</div>
-
-            <p class="hero-intro">
-              I build data platforms for healthcare and enterprise environments — the kind
-              where stale data or a broken pipeline has real consequences.
-            </p>
-            <p class="hero-detail">
-              My work over the past five years has centered on Databricks lakehouse architecture,
-              PySpark pipelines, and the quality and observability systems that keep
-              production data trustworthy at scale.
-            </p>
-
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
-              <a class="btn btn-outline" href="https://linkedin.com/in/surya6032/" target="_blank" rel="noopener">LinkedIn</a>
-              <a class="btn btn-outline" href="https://github.com/Surya6032" target="_blank" rel="noopener">GitHub</a>
-              <a class="btn btn-outline" href="mailto:psurya.924@gmail.com">Email</a>
-            </div>
-
-            <div class="hero-stats">
-              <div class="hero-stat">
-                <div class="hero-stat-val">98%</div>
-                <div class="hero-stat-label">latency reduction</div>
-              </div>
-              <div class="hero-stat">
-                <div class="hero-stat-val">+30%</div>
-                <div class="hero-stat-label">pipeline throughput</div>
-              </div>
-              <div class="hero-stat">
-                <div class="hero-stat-val">99%+</div>
-                <div class="hero-stat-label">pipeline SLA</div>
-              </div>
-              <div class="hero-stat">
-                <div class="hero-stat-val">5+ yrs</div>
-                <div class="hero-stat-label">production data eng</div>
-              </div>
-            </div>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="name">
+    <div class="wrap">
+      <h1 id="name"><span>Surya</span><span class="second">Partap Singh</span></h1>
+      <div class="hero-bar">
+        <div class="hero-meta">
+          <div class="portrait">
+            <img src="profile.jpeg" alt="" width="64" height="64" onerror="this.parentElement.setAttribute('data-fallback','')">
+            <span aria-hidden="true">SP</span>
           </div>
-
-          <div class="fade-in" style="transition-delay: 0.1s">
-            <img class="hero-photo" src="profile.jpeg" alt="Surya Partap Singh" />
-          </div>
-
+          <p><b>Senior Data Engineer</b>Cencora, Data Platform team</p>
+          <p><b>Dallas, Texas</b>Remote-friendly</p>
+          <p><b>Five years in production</b>Databricks, Delta Lake, PySpark, Azure</p>
         </div>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="container">
-        <div class="section-label fade-in">Stack</div>
-        <div class="skills-table fade-in">
-          <div class="skill-row">
-            <div class="skill-cat">Core platform</div>
-            <div class="skill-items">Databricks, Delta Lake, Apache Spark, PySpark, Spark SQL</div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-cat">Cloud &amp; infra</div>
-            <div class="skill-items">Azure (Data Lake, ADF, Blob, SQL), Amazon S3, ARM Templates, Docker</div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-cat">Orchestration</div>
-            <div class="skill-items">Databricks Workflows, Azure Data Factory, Airflow</div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-cat">Quality &amp; CI/CD</div>
-            <div class="skill-items">Great Expectations, schema evolution, anomaly detection, GitHub Actions, Azure DevOps</div>
-          </div>
-          <div class="skill-row">
-            <div class="skill-cat">Languages</div>
-            <div class="skill-items">Python, SQL, C++</div>
+        <div>
+          <p class="lede">I build the data platforms that healthcare teams make decisions from, so nobody has to wonder whether the number is right.</p>
+          <p class="sub">At Cencora I designed and run the Databricks lakehouse that clinical, pharmacy and financial teams report from: 5 to 10 TB a day, incremental by default, with quality gates at every layer. Below is a working model of how I build pipelines, then the real ones.</p>
+          <div class="actions">
+            <a class="btn fill" href="#demo">Try the pipeline</a>
+            <a class="btn" href="#work">See the work</a>
+            <a class="btn" href="mailto:psurya.924@gmail.com">Email me</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- SELECTED WORK -->
-    <section id="work">
-      <div class="container">
-        <div class="section-label fade-in">Selected work</div>
-
-        <div class="work-list fade-in">
-
-          <!-- PROJECT 1: Medallion lakehouse -->
-          <article class="work-item open">
-            <button class="work-toggle" aria-expanded="true">
-              <div class="work-left">
-                <div class="work-title">Medallion Lakehouse Platform</div>
-                <div class="work-summary">Unified clinical, financial, and pharmacy data into a single, governed lakehouse — built to be reusable, not just functional.</div>
-              </div>
-              <div class="work-right">
-                <span class="work-metric">5–10 TB/day</span>
-                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </button>
-            <div class="work-body">
-              <div class="work-body-inner">
-                <div class="work-body-content">
-                  <p class="work-detail-text">
-                    The platform grew out of a real problem: multiple teams were maintaining their own copies of
-                    the same source data, each with slightly different logic. The goal was to consolidate that into
-                    a Bronze/Silver/Gold lakehouse where the transformation rules lived once and the outputs
-                    could be trusted by analytics, reporting, and data science downstream.
-                  </p>
-                  <ul class="work-points">
-                    <li>Defined clear layer contracts — raw ingestion, conformed schemas, business-ready gold tables — so teams knew exactly what to expect at each stage.</li>
-                    <li>Used Delta Change Data Feed throughout to avoid full-table reprocessing; incremental by default.</li>
-                    <li>Standardized ingestion patterns across 10+ upstream systems — new sources now follow a documented template rather than being built from scratch.</li>
-                    <li>Cut time-to-insight for analytics and reporting teams by 50%.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- PROJECT 2: Financial reporting — different inner layout -->
-          <article class="work-item">
-            <button class="work-toggle" aria-expanded="false">
-              <div class="work-left">
-                <div class="work-title">Financial Reporting Pipeline</div>
-                <div class="work-summary">Rebuilt a nightly batch job into an incremental, near-real-time workflow so finance and leadership could stop working with yesterday's numbers.</div>
-              </div>
-              <div class="work-right">
-                <span class="work-metric">24 h → 15 min</span>
-                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </button>
-            <div class="work-body">
-              <div class="work-body-inner">
-                <div class="work-body-content">
-                  <div class="work-cols">
-                    <div>
-                      <div class="work-col-label">Problem</div>
-                      <div class="work-col-text">The batch pipeline completed around 2am. By the time finance opened their dashboards, the data was already 6–8 hours old and decisions were being made on stale numbers.</div>
-                    </div>
-                    <div>
-                      <div class="work-col-label">Approach</div>
-                      <div class="work-col-text">Replaced the full-refresh logic with Delta CDF-based incremental processing and Spark Structured Streaming. Ran a parallel validation period before decommissioning the old job.</div>
-                    </div>
-                  </div>
-                  <ul class="work-points">
-                    <li>Eliminated full-table scans — only changed records flow through on each run.</li>
-                    <li>Added monitoring, retry logic, and alerting so the new pipeline is easier to operate than the old one.</li>
-                    <li>Reporting latency went from 24 hours to under 15 minutes.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- PROJECT 3: Data quality — plain prose, no bullets -->
-          <article class="work-item">
-            <button class="work-toggle" aria-expanded="false">
-              <div class="work-left">
-                <div class="work-title">Data Quality &amp; Observability</div>
-                <div class="work-summary">Built automated quality controls into the platform so issues get caught before they reach downstream consumers — not after.</div>
-              </div>
-              <div class="work-right">
-                <span class="work-metric">−35% incidents</span>
-                <svg class="work-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            </button>
-            <div class="work-body">
-              <div class="work-body-inner">
-                <div class="work-body-content">
-                  <p class="work-detail-text">
-                    The trigger was a pattern of incidents where downstream teams would discover data problems
-                    hours after the fact. Schema drift, late-arriving data, sudden volume drops — all of them
-                    surfacing in dashboards rather than at the pipeline boundary where they could be caught early.
-                  </p>
-                  <p class="work-detail-text">
-                    I implemented Great Expectations checks and anomaly detection monitors at each medallion
-                    layer, integrated quality gates into CI/CD so bad data can't be deployed, and built freshness
-                    and volume monitors that alert before consumers notice an issue. Data incidents dropped 35%.
-                    More importantly, teams stopped treating shared datasets as unreliable.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience">
-      <div class="container">
-        <div class="section-label fade-in">Experience</div>
-        <div class="exp-list fade-in">
-
-          <div class="exp-item">
-            <div class="exp-date">Feb 2023<br>— Present</div>
-            <div>
-              <div class="exp-role">Senior Data Engineer, Data Platform</div>
-              <div class="exp-company">Cencora · Dallas, TX</div>
-              <ul class="exp-bullets">
-                <li>Designed and scaled a Databricks medallion lakehouse unifying clinical, financial, and pharmacy data — 50% reduction in time-to-insight.</li>
-                <li>Improved end-to-end pipeline throughput by 30% through targeted Spark tuning: partitioning, shuffle behavior, join strategies, cluster config.</li>
-                <li>Reduced financial reporting latency from 24 hours to 15 minutes using Delta CDF and Spark Structured Streaming.</li>
-                <li>Built OCR-driven ingestion pipelines for unstructured patient documents, enabling downstream clinical analytics and ML workflows.</li>
-                <li>Reduced data incidents by 35% with Great Expectations quality controls and anomaly detection integrated as deployment gates.</li>
-                <li>Cut deployment time by 25% through CI/CD automation via GitHub Actions, Azure DevOps, and ARM Templates.</li>
-                <li>Reduced new data source onboarding time by 40% through reusable ingestion and transformation frameworks.</li>
-                <li>Mentored 3–5 engineers on ETL design, Spark optimization, and platform best practices.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="exp-item">
-            <div class="exp-date">May 2021<br>— Feb 2023</div>
-            <div>
-              <div class="exp-role">Data Engineer (Contract)</div>
-              <div class="exp-company">Cencora · Dallas, TX</div>
-              <ul class="exp-bullets">
-                <li>Built and supported production ETL pipelines on Databricks, Azure Data Factory, and PySpark for large-scale clinical, pharmacy, and financial datasets.</li>
-                <li>Designed canonical, single-source-of-truth tables that standardized disparate source systems and eliminated 3+ redundant dataset copies across business units.</li>
-                <li>Optimized large-scale Spark transformations using broadcast joins, predicate pushdown, and partition-aware reads to reduce compute costs.</li>
-                <li>Automated ETL workflows through Databricks Jobs — achieving 99%+ pipeline success rates and consistent SLA adherence.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="exp-item">
-            <div class="exp-date">Feb 2021<br>— May 2021</div>
-            <div>
-              <div class="exp-role">Data Engineer</div>
-              <div class="exp-company">Fuge Technologies · Dallas–Fort Worth, TX</div>
-              <ul class="exp-bullets">
-                <li>Built Hadoop and Hive-based batch pipelines, applying partition pruning, bucketing, and execution plan analysis to improve distributed query performance.</li>
-                <li>Developed Azure Data Lake ingestion pipelines via ADF — incremental loads, schema evolution handling, and downstream validation checks.</li>
-              </ul>
-            </div>
-          </div>
-
-                  </div>
-      </div>
-    </section>
-
-    <!-- EDUCATION -->
-    <section id="education">
-      <div class="container">
-        <div class="section-label fade-in">Education</div>
-        <div class="edu-block fade-in">
-          <div class="edu-row">
-            <div class="edu-left">
-              <div class="edu-degree">B.S. Computer Science</div>
-              <div class="edu-school">University of North Alabama &middot; Florence, AL</div>
-              <div class="edu-courses">Distributed Systems &middot; Database Management &middot; Data Structures &amp; Algorithms &middot; Cloud Computing &middot; Machine Learning</div>
-            </div>
-            <div class="edu-date">Dec 2020</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="container">
-        <div class="section-label fade-in">About</div>
-        <div class="about-layout fade-in">
-          <div class="about-text">
-            <p>
-              I'm a Senior Data Engineer based in Dallas. Most of my work has been at Cencora,
-              where I've spent the last four years building and maintaining data infrastructure
-              for healthcare and pharmaceutical operations — environments where a broken pipeline
-              or bad data has real downstream consequences.
-            </p>
-            <p>
-              I care about building systems that are maintainable and usable for the people
-              who inherit them. That means clear documentation, consistent patterns, and a
-              preference for boring reliability over clever solutions. I also mentor engineers
-              on the team — not just on technical specifics but on how to think about tradeoffs
-              in production system design.
-            </p>
-            <p>
-              Outside of work: chess, sim racing, 3D printing, tennis, cricket.
-            </p>
-
-            <div class="principles">
-              <div class="principle">
-                <div class="principle-label">Correctness first</div>
-                <div class="principle-text">Performance is easier to fix than wrong data in a dashboard someone has been trusting for six months.</div>
-              </div>
-              <div class="principle">
-                <div class="principle-label">Build for the next person</div>
-                <div class="principle-text">If I leave a project, it should be obvious how it works and straightforward to change.</div>
-              </div>
-              <div class="principle">
-                <div class="principle-label">Observability is not optional</div>
-                <div class="principle-text">If you can't tell when something is wrong, the system isn't finished.</div>
-              </div>
-              <div class="principle">
-                <div class="principle-label">Teams over tools</div>
-                <div class="principle-text">The best platform is one people actually use and trust — which usually has more to do with clarity than technology.</div>
-              </div>
-            </div>
-          </div>
-
-          
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="container">
-        <div class="section-label fade-in">Contact</div>
-        <div class="contact-block fade-in">
-          <p>
-            Open to senior data engineering, staff, and architecture-focused roles.
-            Happy to talk if it sounds like a good fit.
-          </p>
-          <div class="contact-links">
-            <a class="contact-link" href="mailto:psurya.924@gmail.com">
-              <span class="contact-link-label">Email</span>
-              psurya.924@gmail.com
-            </a>
-            <a class="contact-link" href="https://linkedin.com/in/surya6032/" target="_blank" rel="noopener">
-              <span class="contact-link-label">LinkedIn</span>
-              linkedin.com/in/surya6032
-            </a>
-            <a class="contact-link" href="https://github.com/Surya6032" target="_blank" rel="noopener">
-              <span class="contact-link-label">GitHub</span>
-              github.com/Surya6032
-            </a>
-            <a class="contact-link" href="resume.pdf" target="_blank" rel="noopener">
-              <span class="contact-link-label">Resume</span>
-              Download PDF
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  
-  <!-- ═══════════════════════════════════════════════════════ CHESS SECTION -->
-
-    <section id="chess">
-  <div class="container">
-    <p class="section-label">Chess</p>
-    <div class="chess-block">
-      <div class="chess-intro">
-        <p>
-          Outside of work, I enjoy chess — mostly for the strategy, patience,
-          and pattern recognition. It’s one of those hobbies that feels simple
-          on the surface and endlessly deep once you spend time with it.
-        </p>
-      </div>
-      <div class="chess-actions">
-        <a href="chess.html" target="_blank" rel="noopener" class="chess-btn">
-          Play my bot →
-        </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Demo -->
+  <section class="demo" id="demo" aria-labelledby="demo-h">
+    <div class="wrap">
+      <div class="demo-head">
+        <div>
+          <h2 id="demo-h">A pipeline you can poke at</h2>
+          <p>A toy version of the medallion pattern I use in production, running in your browser. Ingest a batch and watch bad rows get quarantined with a reason instead of reaching the Gold layer. Correct a record and watch only that row flow through, the way Delta Change Data Feed lets the real thing avoid full-table reprocessing.</p>
+        </div>
+        <div class="controls">
+          <button class="primary" id="ingest" type="button">Ingest a batch</button>
+          <button id="correct" type="button">Correct a record</button>
+          <button class="quiet" id="reset" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="layer bronze">
+          <div class="layer-head"><h3>Bronze</h3><span id="bronze-count">0 rows</span></div>
+          <p class="layer-sub">Raw, append-only, exactly as it arrived</p>
+          <div class="rows" id="bronze-rows" aria-live="off"></div>
+        </div>
+        <div class="layer silver">
+          <div class="layer-head"><h3>Silver</h3><span id="silver-count">0 rows</span></div>
+          <p class="layer-sub">Validated and conformed. One row per claim id.</p>
+          <div class="rows" id="silver-rows" aria-live="off"></div>
+          <div class="quarantine">
+            <h4>Quarantined at the gate</h4>
+            <ul id="quarantine"></ul>
+          </div>
+        </div>
+        <div class="layer gold">
+          <div class="layer-head"><h3>Gold</h3><span id="gold-count">4 regions</span></div>
+          <p class="layer-sub">Units dispensed by region, what the dashboard reads</p>
+          <div class="agg" id="gold-rows"></div>
+        </div>
+      </div>
+
+      <div class="runlog">
+        <p id="runlog" aria-live="polite"></p>
+        <p class="vs" id="vs"></p>
+      </div>
+      <p class="demo-foot">Everything on this page is static HTML. The pipeline is about 150 lines of plain JavaScript with no dependencies. The real one is PySpark on Databricks; the shape is the same.</p>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="section" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <h2 id="work-h">Selected work</h2>
+      <p class="section-lede">Three projects from the Cencora data platform, each with the number that mattered and the engineering behind it.</p>
+
+      <article class="case">
+        <div>
+          <div class="figure" aria-label="From 24 hours to 15 minutes"><s>24 h</s><em>15 min</em></div>
+          <p class="figure-label">Reporting latency for finance and leadership</p>
+        </div>
+        <div>
+          <h3>Financial reporting pipeline</h3>
+          <p><b>The problem.</b> The nightly batch finished around 2 am. By the time finance opened their dashboards the data was six to eight hours old, and any correction waited a full day to appear. Decisions were being made on yesterday’s numbers.</p>
+          <p><b>What I did.</b> Replaced full-refresh logic with Delta Change Data Feed and Spark Structured Streaming so only changed records flow on each run. Ran the new pipeline alongside the old one through a validation period, then retired the old job.</p>
+          <div class="latency" aria-label="Latency before and after">
+            <div><span>Before</span><i style="width:100%"></i><b>24 h</b></div>
+            <div><span>After</span><i style="width:1.05%;min-width:4px"></i><b>15 min</b></div>
+          </div>
+          <ul>
+            <li>No more full-table scans; each run touches only what changed.</li>
+            <li>Monitoring, retries and alerting built in, so it’s easier to operate than what it replaced.</li>
+            <li>Platform-wide Spark tuning of partitioning, shuffle, join strategy and cluster config lifted end-to-end throughput by 30%.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="case">
+        <div>
+          <div class="figure"><em>50%</em></div>
+          <p class="figure-label">Faster time to insight for analytics and reporting teams</p>
+        </div>
+        <div>
+          <h3>Medallion lakehouse platform</h3>
+          <p><b>The problem.</b> Several teams each maintained their own copy of the same source data with slightly different logic. Reports disagreed and nobody could say which number was right.</p>
+          <p><b>What I did.</b> Led the design of a single Bronze/Silver/Gold lakehouse for clinical, pharmacy and financial data, where every transformation rule lives once and every consumer reads the same Gold tables. Five to ten terabytes a day from more than ten upstream systems.</p>
+<pre><code><span class="c"># Read only what changed since the last run, then merge into Silver</span>
+changes = (spark.read.format(<span class="s">"delta"</span>)
+    .option(<span class="s">"readChangeFeed"</span>, <span class="s">"true"</span>)
+    .option(<span class="s">"startingVersion"</span>, last_processed_version)
+    .table(<span class="s">"bronze.claims"</span>)
+    .filter(<span class="s">"_change_type in ('insert', 'update_postimage')"</span>))
+
+(DeltaTable.forName(spark, <span class="s">"silver.claims"</span>).alias(<span class="s">"t"</span>)
+    .merge(conform(changes).alias(<span class="s">"s"</span>), <span class="s">"t.claim_id = s.claim_id"</span>)
+    .whenMatchedUpdateAll()
+    .whenNotMatchedInsertAll()
+    .execute())</code></pre>
+          <ul>
+            <li>Wrote the layer contracts: raw append-only ingestion, conformed schemas, business-ready Gold, so every team knew what to expect at each stage.</li>
+            <li>Standardized ingestion into a documented template; onboarding a new source takes 40% less time.</li>
+            <li>OCR-driven ingestion for unstructured patient documents, feeding clinical analytics and ML.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="case">
+        <div>
+          <div class="figure"><em>35%</em></div>
+          <p class="figure-label">Fewer data incidents reaching downstream teams</p>
+        </div>
+        <div>
+          <h3>Data quality and observability</h3>
+          <p><b>The problem.</b> Schema drift, late-arriving data and sudden volume drops were all being discovered in dashboards, hours after the fact, by the people least able to fix them.</p>
+          <p><b>What I did.</b> Built checks at every medallion layer and wired them into CI/CD so bad data can’t be deployed. Freshness and volume monitors alert before a consumer notices anything.</p>
+          <div class="gates" aria-label="What each gate catches">
+            <div><span>Schema drift</span><span>Column contracts checked at deploy; the build fails before the pipeline does</span></div>
+            <div><span>Bad values</span><span>Great Expectations suites per layer; rows quarantined with a reason, not dropped</span></div>
+            <div><span>Late data</span><span>Freshness SLAs per table, alerting when a source goes quiet</span></div>
+            <div><span>Volume drops</span><span>Anomaly detection on row counts against a rolling baseline</span></div>
+          </div>
+          <ul>
+            <li>Deployment time down 25% from the same CI/CD work across GitHub Actions, Azure DevOps and ARM Templates.</li>
+            <li>The bigger change was cultural: teams stopped double-checking shared datasets and started building on them.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience" aria-labelledby="exp-h">
+    <div class="wrap">
+      <h2 id="exp-h">Experience</h2>
+      <p class="section-lede">Five years at one company, from contract engineer to owning the platform. The projects above are from the two Cencora roles.</p>
+
+      <article class="job">
+        <div class="job-when">Feb 2023 to now<small>Dallas, TX</small></div>
+        <div>
+          <h3>Senior Data Engineer, Data Platform</h3>
+          <p class="where">Cencora</p>
+          <p class="note">Converted from contract to full-time after 21 months. I own the lakehouse, the financial reporting pipeline and the data quality platform described above.</p>
+          <ul>
+            <li>Mentor three to five engineers on ETL design, Spark optimization and how to weigh tradeoffs in production systems.</li>
+            <li>Set the ingestion and transformation patterns the rest of the platform team builds against.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job-when">May 2021 to Feb 2023<small>Dallas, TX</small></div>
+        <div>
+          <h3>Data Engineer, contract</h3>
+          <p class="where">Cencora</p>
+          <ul>
+            <li>Built and supported production ETL on Databricks, Azure Data Factory and PySpark for large clinical, pharmacy and financial datasets.</li>
+            <li>Designed canonical, single-source-of-truth tables that retired three or more redundant copies across business units.</li>
+            <li>Cut compute cost with broadcast joins, predicate pushdown and partition-aware reads.</li>
+            <li>Automated workflows in Databricks Jobs and held a 99%+ success rate against SLA.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job-when">Feb to May 2021<small>Dallas–Fort Worth, TX</small></div>
+        <div>
+          <h3>Data Engineer</h3>
+          <p class="where">Fuge Technologies</p>
+          <ul>
+            <li>Hadoop and Hive batch pipelines, tuned with partition pruning, bucketing and execution-plan analysis.</li>
+            <li>Azure Data Lake ingestion via ADF: incremental loads, schema-evolution handling, downstream validation.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="job">
+        <div class="job-when">Dec 2020<small>Florence, AL</small></div>
+        <div>
+          <h3>B.S. Computer Science</h3>
+          <p class="where">University of North Alabama</p>
+          <ul>
+            <li>Distributed systems, database management, data structures and algorithms, cloud computing, machine learning.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section" id="stack" aria-labelledby="stack-h">
+    <div class="wrap">
+      <h2 id="stack-h">Stack</h2>
+      <p class="section-lede">Sorted by how much I actually use it, because a flat list of logos tells you nothing.</p>
+      <div class="stack">
+        <div>
+          <h3>Every day</h3>
+          <p class="how">The tools the platform is made of</p>
+          <ul>
+            <li>Databricks and Delta Lake</li>
+            <li>PySpark and Spark SQL</li>
+            <li>Python and SQL</li>
+            <li>Azure Data Factory</li>
+            <li>Databricks Workflows</li>
+            <li>GitHub Actions</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Regularly</h3>
+          <p class="how">Comfortable without looking anything up</p>
+          <ul>
+            <li>Azure Data Lake, Blob and SQL</li>
+            <li>Great Expectations</li>
+            <li>Spark Structured Streaming</li>
+            <li>Azure DevOps and ARM Templates</li>
+            <li>Anomaly detection on pipeline metrics</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Have shipped with</h3>
+          <p class="how">Used in production, not my daily driver</p>
+          <ul>
+            <li>Airflow</li>
+            <li>Hadoop and Hive</li>
+            <li>Amazon S3</li>
+            <li>Docker</li>
+            <li>C++</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <h2 id="about-h">About</h2>
+      <p class="section-lede">How I think about the work, and what I do when I’m not doing it.</p>
+      <div class="about">
+        <div>
+          <p>I’m a Senior Data Engineer in Dallas. Nearly all of my work has been at Cencora, five years of building and running data infrastructure for healthcare and pharmaceutical operations, where a broken pipeline or a wrong number lands on real people.</p>
+          <p>I care about systems the next person can understand and change: clear documentation, consistent patterns, boring reliability over clever solutions. The platforms I’m proudest of are the ones nobody has to think about.</p>
+        </div>
+        <div class="principles">
+          <div><h3>Correctness first</h3><p>Slow is easier to fix than a dashboard someone trusted for six months and shouldn’t have.</p></div>
+          <div><h3>Build for the next person</h3><p>If I leave, how it works should be obvious and changing it should be safe.</p></div>
+          <div><h3>Observability isn’t optional</h3><p>If you can’t tell when something is wrong, it isn’t finished.</p></div>
+          <div><h3>Teams over tools</h3><p>The best platform is the one people actually trust, and that comes from clarity more than technology.</p></div>
+        </div>
+      </div>
+
+      <div class="chess">
+        <div class="board" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div>
+          <h3>Off the clock</h3>
+          <p>Chess, tennis, cricket, sim racing, and a 3D printer that is never quite calibrated. I also wrote a chess engine in vanilla JavaScript over a few weekends: full legal move generation with castling, en passant and promotion, minimax with alpha-beta pruning to depth four, and a piece-square evaluation. It punishes carelessness and rewards patience, which is about where my own game is. <a href="https://surya6032.github.io/portfolio/chess.html">Play it as White.</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <h2 id="contact-h">Contact</h2>
+      <p class="intro">Open to senior, staff and architecture-focused data engineering roles, remote or in Dallas. If the work above sounds like your problems, write to me.</p>
+      <a class="mail" href="mailto:psurya.924@gmail.com">psurya.924@gmail.com</a>
+      <div class="links">
+        <a href="https://linkedin.com/in/surya6032/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Surya6032" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://surya6032.github.io/portfolio/resume.pdf" target="_blank" rel="noopener">Resume as PDF</a>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-    <div class="footer-inner">
-      <span>Surya Partap Singh</span>
-      <span>Dallas, TX &nbsp;·&nbsp; Remote-friendly</span>
-    </div>
-  </footer>
+  <div class="wrap">
+    <span>Surya Partap Singh</span>
+    <span>Built by hand. No framework, no tracking.</span>
+  </div>
+</footer>
 
-  <script>
-    // Theme toggle
-    (function () {
-      const root = document.documentElement;
-      const btn = document.getElementById("themeToggle");
-      const stored = localStorage.getItem("theme");
-      const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      root.setAttribute("data-theme", stored || preferred);
-
-      btn.addEventListener("click", () => {
-        const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem("theme", next);
-      });
-    })();
-
-    // Work accordion
-    (function () {
-      const items = document.querySelectorAll(".work-item");
-      items.forEach(item => {
-        const btn = item.querySelector(".work-toggle");
-        btn.addEventListener("click", () => {
-          const isOpen = item.classList.contains("open");
-          items.forEach(i => {
-            i.classList.remove("open");
-            i.querySelector(".work-toggle").setAttribute("aria-expanded", "false");
-          });
-          if (!isOpen) {
-            item.classList.add("open");
-            btn.setAttribute("aria-expanded", "true");
-          }
-        });
-      });
-    })();
-
-    // Fade-in on scroll
-    (function () {
-      const els = document.querySelectorAll(".fade-in");
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
-      }, { threshold: 0.08 });
-      els.forEach(el => obs.observe(el));
-    })();
-  
-
-    
-  
-  // ── Mobile nav ──
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileNav = document.getElementById('mobileNav');
-
-  function closeMobileNav() {
-    mobileNav.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-  }
-
-  menuBtn.addEventListener('click', () => {
-    const isOpen = mobileNav.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  // Close drawer on outside click
-  document.addEventListener('click', (e) => {
-    if (!menuBtn.contains(e.target) && !mobileNav.contains(e.target)) {
-      closeMobileNav();
+<script>
+  // Theme
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('toggle');
+    function current() {
+      return root.getAttribute('data-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     }
-  });
+    btn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  })();
 
+  // Pipeline demo: Bronze (raw) -> gate -> Silver (conformed) -> Gold (aggregate), incremental via a change feed.
+  (function () {
+    var REGIONS = ['North', 'South', 'East', 'West'];
+    var $ = function (id) { return document.getElementById(id); };
+    var bronze, silver, gold, feed, quarantine, nextId, run, seed;
+
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    function pick(a) { return a[Math.floor(rnd() * a.length)]; }
+    function units() { return 5 + Math.floor(rnd() * 120); }
+
+    function reset() {
+      bronze = []; silver = new Map(); feed = []; quarantine = []; nextId = 1001; run = 0; seed = 7;
+      gold = {}; REGIONS.forEach(function (r) { gold[r] = 0; });
+      // Seed with two clean batches so the page never opens empty.
+      ingest(true); ingest(true);
+      process(); // conform the seed rows quietly so the first click starts from a clean feed
+      render({ processed: 0, total: bronze.length, inserted: 0, updated: 0, rejected: 0, dirty: [] }, true);
+    }
+
+    function makeRow(bad) {
+      var row = { id: nextId++, region: pick(REGIONS), units: units() };
+      if (bad === 'region') row.region = pick(['Nrth', 'Central', '', 'WEST ']);
+      if (bad === 'units') row.units = -Math.floor(rnd() * 40) - 1;
+      if (bad === 'drift') row.units = String(units()) + ' units';
+      if (bad === 'dupe') { var src = pick(Array.from(silver.values())); if (src) row.id = src.id; }
+      return row;
+    }
+
+    function ingest(clean) {
+      var n = 5 + Math.floor(rnd() * 3), batch = [];
+      for (var i = 0; i < n; i++) batch.push(makeRow(null));
+      if (!clean) {
+        var kinds = ['region', 'units', 'drift']; if (silver.size) kinds.push('dupe');
+        batch[Math.floor(rnd() * n)] = makeRow(pick(kinds));
+        if (rnd() < 0.5) batch[Math.floor(rnd() * n)] = makeRow(pick(kinds));
+      }
+      batch.forEach(function (r) { bronze.push(r); feed.push({ type: 'insert', row: r }); });
+      if (!clean) runPipeline();
+    }
+
+    function correct() {
+      var rows = Array.from(silver.values());
+      if (!rows.length) return;
+      var target = rows[Math.floor(rnd() * rows.length)];
+      var fixed = { id: target.id, region: target.region, units: units() };
+      bronze.push(fixed); // append-only: the correction is a new Bronze row for the same claim id
+      feed.push({ type: 'update', row: fixed });
+      runPipeline();
+    }
+
+    function validate(row, type) {
+      if (typeof row.units === 'string') return 'units arrived as text, schema drift';
+      if (!Number.isInteger(row.units) || row.units < 0) return 'units must be a non-negative integer';
+      if (REGIONS.indexOf(row.region) < 0) return 'region not in reference list';
+      if (type === 'insert' && silver.has(row.id)) return 'duplicate claim id';
+      return null;
+    }
+
+    function runPipeline() {
+      run++;
+      var out = process();
+      render(out.stats, false, out.changed);
+    }
+
+    function process() {
+      var stats = { processed: feed.length, total: bronze.length, inserted: 0, updated: 0, rejected: 0, dirty: [] };
+      var dirty = {};
+      var changed = { silver: [], quarantine: [] };
+      feed.forEach(function (ev) {
+        var why = validate(ev.row, ev.type);
+        if (why) {
+          stats.rejected++;
+          quarantine.push({ id: ev.row.id, why: why });
+          changed.quarantine.push(ev.row.id);
+          return;
+        }
+        var prev = silver.get(ev.row.id);
+        if (prev) { gold[prev.region] -= prev.units; dirty[prev.region] = true; stats.updated++; }
+        else stats.inserted++;
+        silver.set(ev.row.id, ev.row);
+        gold[ev.row.region] += ev.row.units; dirty[ev.row.region] = true; // recompute only the regions that moved
+        changed.silver.push(ev.row.id);
+      });
+      stats.dirty = Object.keys(dirty);
+      feed = []; // the feed is consumed; the next run starts from here
+      return { stats: stats, changed: changed };
+    }
+
+    function rowHTML(r, cls) {
+      var u = typeof r.units === 'string' ? '"' + r.units + '"' : r.units;
+      return '<div class="row ' + (cls || '') + '"><b>' + r.id + '</b><span>' + (r.region === '' ? '∅' : r.region) + '</span><span>' + u + ' units</span></div>';
+    }
+
+    function render(stats, silent, changed) {
+      changed = changed || { silver: [], quarantine: [] };
+      var recent = bronze.slice(-8);
+      $('bronze-rows').innerHTML = recent.map(function (r) {
+        var bad = validateForDisplay(r), isNew = !silent && stats.processed > 0 && bronze.indexOf(r) >= bronze.length - stats.processed;
+        return rowHTML(r, (bad ? 'bad ' : '') + (isNew ? 'new' : ''));
+      }).join('');
+      $('bronze-count').textContent = bronze.length + ' rows';
+
+      var srows = Array.from(silver.values()).slice(-8);
+      $('silver-rows').innerHTML = srows.map(function (r) {
+        return rowHTML(r, changed.silver.indexOf(r.id) >= 0 ? 'changed' : '');
+      }).join('');
+      $('silver-count').textContent = silver.size + ' rows';
+
+      var q = quarantine.slice(-4);
+      $('quarantine').innerHTML = q.length
+        ? q.map(function (x) { return '<li><b>' + x.id + '</b> ' + x.why + '</li>'; }).join('')
+        : '<li class="none">Nothing yet. Ingest a batch.</li>';
+
+      $('gold-rows').innerHTML = REGIONS.map(function (r) {
+        var moved = stats.dirty.indexOf(r) >= 0;
+        return '<div class="' + (moved ? 'changed' : '') + '"><span>' + r + '</span><strong>' + gold[r].toLocaleString() + '</strong></div>';
+      }).join('');
+
+      if (silent) {
+        $('runlog').innerHTML = 'Ready. <b>' + bronze.length + '</b> rows seeded into Bronze and conformed into Silver.';
+        $('vs').innerHTML = '';
+        return;
+      }
+      $('runlog').innerHTML = 'run ' + run + ': <b>' + stats.processed + '</b> changes read from the feed, <b>' + stats.inserted + '</b> inserted, <b>' + stats.updated + '</b> updated, <b>' + stats.rejected + '</b> quarantined. Gold recomputed for ' + (stats.dirty.length ? stats.dirty.join(', ') : 'nothing') + '.';
+      $('vs').innerHTML = 'Processed <strong>' + stats.processed + '</strong> ' + (stats.processed === 1 ? 'row' : 'rows') + '. A full refresh would have reprocessed <strong>' + stats.total + '</strong>.';
+    }
+
+    function validateForDisplay(r) {
+      if (typeof r.units === 'string') return true;
+      if (!Number.isInteger(r.units) || r.units < 0) return true;
+      if (REGIONS.indexOf(r.region) < 0) return true;
+      return false;
+    }
+
+    $('ingest').addEventListener('click', function () { ingest(false); });
+    $('correct').addEventListener('click', correct);
+    $('reset').addEventListener('click', reset);
+    reset();
+  })();
 </script>
-
 </body>
 </html>
