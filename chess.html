@@ -1,404 +1,265 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play my bot — Surya Partap Singh</title>
-  <meta name="description" content="A chess engine in vanilla JavaScript by Surya Partap Singh: legal move generation, iterative-deepening alpha-beta search, and a piece-square evaluation." />
-  <link rel="canonical" href="https://surya6032.github.io/portfolio/chess.html" />
-  <meta property="og:title" content="Play chess against Surya’s bot" />
-  <meta property="og:description" content="A chess engine in vanilla JavaScript. You play White." />
-  <meta property="og:url" content="https://surya6032.github.io/portfolio/chess.html" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233a7ca5'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' font-weight='700' fill='white' text-anchor='middle'%3ESS%3C/text%3E%3C/svg%3E" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chess | Surya Partap Singh</title>
+<meta name="description" content="A chess engine in vanilla JavaScript by Surya Partap Singh: legal move generation, iterative-deepening alpha-beta search, and a piece-square evaluation.">
+<link rel="canonical" href="https://surya6032.github.io/portfolio/chess.html">
+<meta property="og:title" content="Play chess against Surya’s bot">
+<meta property="og:description" content="A chess engine in vanilla JavaScript. You play White.">
+<meta property="og:url" content="https://surya6032.github.io/portfolio/chess.html">
+<meta name="theme-color" content="#ffc53d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318191f'/%3E%3Ctext x='15' y='22' font-family='monospace' font-size='18' font-weight='700' fill='white' text-anchor='middle'%3ES%3C/text%3E%3Ccircle cx='25' cy='21' r='2.5' fill='%23ffc53d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+<style>
+  @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  :root {
+    --bg: #18191f; --bg-2: #1e1f26; --card: #23242c; --card-2: #2a2b34;
+    --line: rgba(255,255,255,.10); --text: #ffffff; --text-2: rgba(255,255,255,.74); --text-3: rgba(255,255,255,.5);
+    --accent: #ffc53d;            /* keep in sync with home.html */
+    --accent-2: #ff8f5a;
+    --sq-light: #b7b9c6; --sq-dark: #696b7d; --bad: #ff6b5e;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    --pieces: "Noto Sans Symbols 2", "Segoe UI Symbol", "DejaVu Sans", "Apple Symbols", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body { background: var(--bg); color: var(--text); font: 400 16px/1.7 var(--mono); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  svg { display: block; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); }
+  .accent { color: var(--accent); }
+  .title { font-size: clamp(1.9rem, 4.2vw, 3rem); font-weight: 700; line-height: 1.2; text-align: center; margin-bottom: clamp(32px, 5vw, 56px); letter-spacing: -0.02em; }
 
-  <!-- Same theme logic and storage key as the portfolio, so the choice carries across pages -->
-  <script>
-    (function () {
-      var stored = null;
-      try { stored = localStorage.getItem("theme"); } catch (e) {}
-      var preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", stored || preferred);
-    })();
-  </script>
+  /* HEADER (same as home) */
+  header { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  header .container { height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .logo { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; }
+  header nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 34px); }
+  header nav a { font-weight: 500; text-transform: capitalize; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: color .2s; }
+  header nav a:hover, header nav a.on { color: var(--accent); }
+  header nav a.on { border-color: var(--accent); }
+  .hire { background: var(--accent); color: var(--bg) !important; border-radius: 999px; padding: 9px 22px !important; font-weight: 700 !important; border: 0 !important; transition: filter .2s; }
+  .hire:hover { filter: brightness(1.1); }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:        #f8f7f4;
-      --bg-2:      #f0ede8;
-      --text:      #1c1a17;
-      --text-2:    #4c4840;
-      --text-3:    #8a8278;
-      --border:    #e2ddd7;
-      --accent:    #3a7ca5;
-      --accent-2:  #d4e8f0;
-      --bad:       #b94a3b;
-      --sq-light:  #ece5d8;
-      --sq-dark:   #b5a58c;
-      --hl:        rgba(58, 124, 165, 0.22);
-      --hl-dot:    rgba(58, 124, 165, 0.45);
-      --max:       860px;
-      --mono:      "JetBrains Mono", "Courier New", monospace;
-      --pieces:    "Noto Sans Symbols 2", "Segoe UI Symbol", "DejaVu Sans", "Apple Symbols", sans-serif;
-    }
+  /* INTRO */
+  .intro { padding: clamp(28px, 5vw, 56px) 0 clamp(28px, 4vw, 44px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px clamp(24px, 4vw, 56px); align-items: end; }
+  .kicker { font-size: 1.2rem; }
+  .intro h1 { font-size: clamp(2.6rem, 6.6vw, 5rem); line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; margin: 8px 0 22px; }
+  .intro p { color: var(--text-2); max-width: 560px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+  .pill { height: 50px; padding: 0 26px; border-radius: 999px; border: 1.5px solid var(--accent); color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: .86rem; letter-spacing: .04em; transition: background .25s, color .25s, border-color .25s, opacity .2s; }
+  .pill:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+  .pill.solid { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .pill.solid:hover:not(:disabled) { filter: brightness(1.1); }
+  .pill.quiet { border-color: var(--line); color: var(--text-2); }
+  .pill.quiet:hover:not(:disabled) { background: var(--card); color: var(--text); border-color: rgba(255,255,255,.25); }
+  .pill:disabled { opacity: .35; cursor: default; }
 
-    [data-theme="dark"] {
-      --bg:        #151412;
-      --bg-2:      #1e1c19;
-      --text:      #edeae4;
-      --text-2:    #b0aa9f;
-      --text-3:    #6e6860;
-      --border:    #2c2924;
-      --accent:    #5ba3c9;
-      --accent-2:  #1a2e3a;
-      --bad:       #e0705f;
-      --sq-light:  #8a8170;
-      --sq-dark:   #5c5447;
-      --hl:        rgba(91, 163, 201, 0.30);
-      --hl-dot:    rgba(91, 163, 201, 0.60);
-    }
+  /* GAME */
+  .game { display: grid; grid-template-columns: minmax(0, 620px) minmax(280px, 1fr); gap: clamp(22px, 3.4vw, 44px); align-items: start; padding-bottom: clamp(56px, 8vw, 96px); }
+  .player { display: flex; align-items: center; gap: 14px; padding: 12px 4px; }
+  .player .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); flex: none; }
+  .player .dot.w { background: #fff; }
+  .player .dot.b { background: var(--bg); }
+  .player-name { font-weight: 700; line-height: 1.3; }
+  .player-meta { color: var(--text-3); font-size: .82rem; }
+  .player .cap { margin-left: auto; font-family: var(--pieces); font-size: 1.1rem; letter-spacing: -0.05em; color: var(--text-2); min-height: 1.4em; }
+  .player.thinking .player-name::after { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-left: 10px; vertical-align: middle; animation: blink 1s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-text-size-adjust: 100%; }
+  .board-wrap { position: relative; border: 1px solid var(--line); border-radius: 26px; overflow: hidden; padding: 10px; background: linear-gradient(120deg, #1b1c24 0%, #24252f 100%); }
+  .board { display: grid; grid-template-columns: repeat(8, 1fr); width: 100%; aspect-ratio: 1; user-select: none; -webkit-user-select: none; border-radius: 16px; overflow: hidden; }
+  .sq { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: 0; }
+  .sq:focus-visible { outline-offset: -3px; border-radius: 0; }
+  .sq.light { background: var(--sq-light); }
+  .sq.dark  { background: var(--sq-dark); }
+  .sq.last  { box-shadow: inset 0 0 0 999px rgba(255, 197, 61, .38); }
+  .sq.sel   { box-shadow: inset 0 0 0 4px var(--accent); }
+  .sq.check { box-shadow: inset 0 0 0 999px rgba(255, 107, 94, .6); }
+  .sq.legal::after { content: ""; position: absolute; width: 26%; height: 26%; border-radius: 50%; background: rgba(24, 25, 31, .45); }
+  .sq.capture::after { content: ""; position: absolute; inset: 6%; border-radius: 50%; border: 4px solid rgba(24, 25, 31, .5); }
+  .sq .coord { position: absolute; font-size: .6rem; font-weight: 700; color: #18191f; opacity: .55; pointer-events: none; }
+  .sq .coord.file { right: 5px; bottom: 2px; }
+  .sq .coord.rank { left: 5px; top: 2px; }
+  .piece { font-family: var(--pieces); font-size: clamp(26px, 8.6vw, 58px); line-height: 1; pointer-events: none; }
+  .piece.w { color: #fff; text-shadow: 0 0 1.5px #18191f, 0 0 1.5px #18191f, 0 2px 3px rgba(0,0,0,.55); }
+  .piece.b { color: #15161b; text-shadow: 0 0 1px rgba(255,255,255,.35); }
 
-    body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      font-size: 1rem;
-      transition: background 0.2s, color 0.2s;
-      -webkit-font-smoothing: antialiased;
-    }
+  .overlay { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px; background: rgba(24, 25, 31, .82); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); text-align: center; padding: 24px; }
+  .overlay.show { display: flex; }
+  .overlay h2 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--accent); }
+  .overlay p { color: var(--text-2); margin-bottom: 8px; }
+  .overlay.promo { flex-direction: row; gap: 10px; }
+  .overlay.promo button { width: 68px; height: 68px; border-radius: 16px; background: var(--card); border: 1.5px solid var(--line); color: #fff; font-family: var(--pieces); font-size: 2.4rem; transition: border-color .2s, background .2s; }
+  .overlay.promo button:hover { border-color: var(--accent); background: var(--card-2); }
 
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  /* SIDE CARDS */
+  .side { display: grid; gap: 18px; padding-top: 62px; }
+  .panel { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 26px; background: linear-gradient(120deg, #1b1c24 0%, #24252f 100%); padding: 24px 26px; }
+  .panel small { display: block; color: var(--text-3); font-size: .85rem; margin-bottom: 6px; }
+  .status { font-size: clamp(1.2rem, 2.2vw, 1.6rem); font-weight: 700; line-height: 1.3; }
+  .moves { font-size: .88rem; line-height: 2; color: var(--text-2); max-height: 330px; overflow-y: auto; display: grid; grid-template-columns: 3em 1fr 1fr; scrollbar-color: #3a3b46 transparent; }
+  .moves:empty::before { content: "No moves yet. You go first."; grid-column: 1 / -1; color: var(--text-3); }
+  .moves span { padding: 0 8px; }
+  .moves .n { color: var(--text-3); padding-left: 0; }
+  .moves .w, .moves .b { color: var(--text); border-radius: 6px; }
+  .moves .latest { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .panel.tip { background: #15161b; color: var(--text-2); font-size: .9rem; }
 
-    .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+  /* HOW IT WORKS */
+  .how { padding: clamp(40px, 7vw, 80px) 0 clamp(56px, 8vw, 96px); }
+  .xp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+  .xp { border-radius: 26px; padding: 1.5px; background: conic-gradient(from var(--a), transparent 0 68%, var(--accent) 84%, transparent 100%), rgba(255,255,255,.10); animation: spin 6s linear infinite; }
+  .xp:nth-child(2) { animation-duration: 7.5s; } .xp:nth-child(3) { animation-duration: 9s; } .xp:nth-child(4) { animation-duration: 6.8s; }
+  @keyframes spin { to { --a: 360deg; } }
+  .xp > div { height: 100%; border-radius: 24.5px; background: var(--bg-2); padding: 28px clamp(20px, 3vw, 34px); display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 22px; align-items: center; }
+  .xp .ico { width: 76px; height: 76px; border-radius: 18px; background: var(--card-2); display: grid; place-items: center; color: var(--accent); }
+  .xp .ico svg { width: 36px; height: 36px; }
+  .xp h3 { font-size: clamp(1.15rem, 2vw, 1.45rem); font-weight: 700; margin-bottom: 8px; }
+  .xp p { color: var(--text-2); font-size: .93rem; }
 
-    /* NAV — matches the portfolio */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      background: color-mix(in srgb, var(--bg) 88%, transparent);
-      backdrop-filter: blur(14px) saturate(150%);
-      -webkit-backdrop-filter: blur(14px) saturate(150%);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner {
-      max-width: var(--max); margin: 0 auto; padding: 0 32px;
-      height: 56px; display: flex; align-items: center; justify-content: space-between;
-    }
-    .brand { font-size: 0.875rem; font-weight: 500; color: var(--text-2); letter-spacing: 0.01em; }
-    .nav-right { display: flex; align-items: center; gap: 4px; }
-    .nav-links { display: flex; }
-    .nav-links a {
-      font-size: 0.85rem; color: var(--text-3);
-      padding: 6px 10px; border-radius: 6px;
-      transition: color 0.15s, background 0.15s;
-    }
-    .nav-links a:hover { color: var(--text); background: var(--bg-2); }
-    .nav-back { display: none; font-size: 0.85rem; color: var(--text-3); padding: 6px 10px; border-radius: 6px; }
-    .nav-back:hover { color: var(--text); background: var(--bg-2); }
+  /* FOOTER (same as home) */
+  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; }
+  footer .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; }
+  footer .more { display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--text-2); font-size: .92rem; }
+  footer .more a:hover { color: var(--accent); }
+  .socials { display: flex; gap: 18px; }
+  .socials a { width: 40px; height: 40px; border: 1.5px solid var(--accent); border-radius: 50%; display: grid; place-items: center; color: var(--accent); transition: background .25s, color .25s; }
+  .socials a:hover { background: var(--accent); color: var(--bg); }
+  .socials svg { width: 17px; height: 17px; }
 
-    .theme-btn {
-      width: 34px; height: 34px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-3); border: 1px solid var(--border);
-      background: var(--bg-2); margin-left: 8px;
-      transition: all 0.15s;
-    }
-    .theme-btn:hover { color: var(--text); border-color: var(--text-3); }
-    .theme-btn svg { width: 15px; height: 15px; }
-    .icon-sun { display: none; }
-    .icon-moon { display: block; }
-    [data-theme="dark"] .icon-sun { display: block; }
-    [data-theme="dark"] .icon-moon { display: none; }
-
-    /* SECTIONS */
-    section { padding: 52px 0; }
-    section + section { border-top: 1px solid var(--border); }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.72rem; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--text-3);
-      margin-bottom: 20px;
-    }
-
-    /* INTRO */
-    .intro { padding: 64px 0 40px; }
-    .intro h1 {
-      font-size: clamp(2rem, 4.5vw, 2.9rem);
-      font-weight: 600; letter-spacing: -0.035em; line-height: 1.05;
-      margin-bottom: 16px;
-    }
-    .intro p { font-size: 1.02rem; color: var(--text-2); max-width: 580px; line-height: 1.7; margin-bottom: 28px; }
-
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
-    .btn {
-      display: inline-flex; align-items: center;
-      height: 38px; padding: 0 18px;
-      border-radius: 99px; font-size: 0.85rem; font-weight: 500;
-      transition: all 0.15s;
-    }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
-    .btn-outline { border: 1px solid var(--border); color: var(--text-2); }
-    .btn-outline:hover:not(:disabled) { border-color: var(--text-3); color: var(--text); background: var(--bg-2); }
-    .btn:disabled { opacity: 0.4; cursor: default; }
-
-    /* GAME */
-    .game {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 250px;
-      gap: 40px;
-      align-items: start;
-    }
-
-    .player { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
-    .player .dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--text-3); flex: none; }
-    .player .dot.w { background: #fff; }
-    .player .dot.b { background: #1c1a17; }
-    .player-name { font-size: 0.92rem; font-weight: 500; letter-spacing: -0.01em; }
-    .player-meta { font-family: var(--mono); font-size: 0.72rem; color: var(--text-3); }
-    .player .cap {
-      margin-left: auto; font-family: var(--pieces); font-size: 1.05rem;
-      letter-spacing: -0.05em; color: var(--text-2); min-height: 1.4em;
-    }
-    .player.thinking .player-name::after {
-      content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent); margin-left: 10px; vertical-align: middle;
-      animation: blink 1s ease-in-out infinite;
-    }
-    @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-
-    .board-wrap {
-      position: relative;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: 100%; aspect-ratio: 1; user-select: none; -webkit-user-select: none; }
-    .sq { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: 0; }
-    .sq:focus-visible { outline-offset: -3px; border-radius: 0; }
-    .sq.light { background: var(--sq-light); }
-    .sq.dark  { background: var(--sq-dark); }
-    .sq.last  { box-shadow: inset 0 0 0 999px var(--hl); }
-    .sq.sel   { box-shadow: inset 0 0 0 3px var(--accent); }
-    .sq.check { box-shadow: inset 0 0 0 999px rgba(185, 74, 59, 0.45); }
-    .sq.legal::after { content: ""; position: absolute; width: 26%; height: 26%; border-radius: 50%; background: var(--hl-dot); }
-    .sq.capture::after { content: ""; position: absolute; inset: 6%; border-radius: 50%; border: 3px solid var(--hl-dot); }
-    .sq .coord {
-      position: absolute; font-family: var(--mono); font-size: 0.58rem; font-weight: 500;
-      color: #1c1a17; opacity: 0.45; pointer-events: none;
-    }
-    [data-theme="dark"] .sq .coord { color: #f3efe8; opacity: 0.5; }
-    .sq .coord.file { right: 4px; bottom: 2px; }
-    .sq .coord.rank { left: 4px; top: 2px; }
-    .piece { font-family: var(--pieces); font-size: clamp(26px, 8.5vw, 50px); line-height: 1; pointer-events: none; }
-    .piece.w { color: #ffffff; text-shadow: 0 0 1.5px #1c1a17, 0 0 1.5px #1c1a17, 0 1px 2px rgba(0,0,0,0.5); }
-    .piece.b { color: #1c1a17; text-shadow: 0 0 1px rgba(255,255,255,0.3); }
-
-    .overlay {
-      position: absolute; inset: 0; display: none;
-      align-items: center; justify-content: center; flex-direction: column; gap: 10px;
-      background: color-mix(in srgb, var(--bg) 82%, transparent);
-      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
-      text-align: center; padding: 24px;
-    }
-    .overlay.show { display: flex; }
-    .overlay h2 { font-size: clamp(1.5rem, 1rem + 2vw, 2.1rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
-    .overlay p { color: var(--text-2); font-size: 0.92rem; margin-bottom: 6px; }
-    .overlay.promo { flex-direction: row; gap: 8px; }
-    .overlay.promo button {
-      width: 64px; height: 64px; border-radius: 10px;
-      background: var(--bg-2); border: 1px solid var(--border);
-      color: var(--text); font-family: var(--pieces); font-size: 2.3rem;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .overlay.promo button:hover { border-color: var(--accent); background: var(--accent-2); }
-
-    /* SIDE PANEL */
-    .side { display: grid; gap: 28px; padding-top: 46px; }
-    .side .section-label { margin-bottom: 10px; }
-    .status { font-size: 1.05rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; }
-    .moves {
-      font-family: var(--mono); font-size: 0.8rem; line-height: 1.95;
-      color: var(--text-2);
-      max-height: 300px; overflow-y: auto;
-      display: grid; grid-template-columns: 2.6em 1fr 1fr;
-      border-top: 1px solid var(--border); padding-top: 8px;
-    }
-    .moves:empty::before { content: "No moves yet."; grid-column: 1 / -1; color: var(--text-3); font-family: "Inter", system-ui, sans-serif; font-size: 0.85rem; }
-    .moves span { padding: 0 6px; }
-    .moves .n { color: var(--text-3); }
-    .moves .w, .moves .b { color: var(--text); }
-    .moves .latest { background: var(--accent-2); border-radius: 3px; }
-
-    /* HOW IT WORKS — same row style as the portfolio's Stack table */
-    .spec { display: grid; }
-    .spec-row {
-      display: grid; grid-template-columns: 160px 1fr; gap: 20px;
-      padding: 14px 0; border-bottom: 1px solid var(--border); align-items: baseline;
-    }
-    .spec-row:first-child { border-top: 1px solid var(--border); }
-    .spec-cat { font-size: 0.8rem; font-family: var(--mono); color: var(--text-3); letter-spacing: 0.02em; line-height: 1.6; }
-    .spec-text { font-size: 0.92rem; color: var(--text-2); line-height: 1.6; max-width: 600px; }
-
-    /* FOOTER */
-    footer { padding: 28px 0 48px; border-top: 1px solid var(--border); }
-    .footer-inner {
-      max-width: var(--max); margin: 0 auto; padding: 0 32px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 8px;
-      font-size: 0.8rem; color: var(--text-3); font-family: var(--mono);
-    }
-    .footer-inner a:hover { color: var(--accent); }
-
-    @media (prefers-reduced-motion: reduce) {
-      .player.thinking .player-name::after { animation: none; }
-      body, .btn, .theme-btn { transition: none; }
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 760px) {
-      .game { grid-template-columns: 1fr; gap: 12px; }
-      .side { padding-top: 12px; }
-      .moves { max-height: 180px; }
-      .nav-links { display: none; }
-      .nav-back { display: block; }
-      .spec-row { grid-template-columns: 1fr; gap: 4px; }
-    }
-    @media (max-width: 520px) {
-      .container, .nav-inner, .footer-inner { padding-left: 16px; padding-right: 16px; }
-      .intro { padding: 40px 0 28px; }
-      section { padding: 36px 0; }
-      .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
-      .overlay.promo button { width: 54px; height: 54px; font-size: 2rem; }
-    }
-  </style>
+  @media (max-width: 1000px) {
+    .intro { grid-template-columns: 1fr; }
+    .controls { justify-content: flex-start; }
+    .game { grid-template-columns: 1fr; }
+    .side { padding-top: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .side .tip { grid-column: span 2; }
+    .moves { max-height: 190px; }
+    .xp-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    header .container { height: 68px; }
+    .logo { font-size: 1.6rem; }
+    header nav a:not(.hire):not(.on) { display: none; }
+    .pill { height: 44px; padding: 0 18px; font-size: .8rem; }
+    .board-wrap { padding: 6px; border-radius: 18px; } .board { border-radius: 12px; }
+    .side { grid-template-columns: 1fr; } .side .tip { grid-column: auto; }
+    .xp > div { grid-template-columns: 1fr; } .xp .ico { width: 60px; height: 60px; }
+    .overlay.promo button { width: 56px; height: 56px; font-size: 2rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .xp, .player.thinking .player-name::after { animation: none; }
+  }
+</style>
 </head>
 <body>
 
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">Surya Partap Singh</a>
-      <div class="nav-right">
-        <nav class="nav-links" aria-label="Primary">
-          <a href="index.html#work">Work</a>
-          <a href="index.html#experience">Experience</a>
-          <a href="index.html#about">About</a>
-          <a href="index.html#contact">Contact</a>
-        </nav>
-        <a class="nav-back" href="index.html">Portfolio</a>
-        <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle color theme">
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        </button>
+<header>
+  <div class="container">
+    <a class="logo" href="home.html">Surya<span class="accent">.</span></a>
+    <nav aria-label="Primary">
+      <a href="home.html">Professional</a>
+      <a class="on" href="chess.html">Chess</a>
+      <a href="world.html">3D World</a>
+      <a href="home.html#contact">Contact</a>
+      <a class="hire" href="mailto:psurya.924@gmail.com">Hire me</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="intro">
+    <div>
+      <span class="kicker">Chess engine, written from scratch</span>
+      <h1>Play against<br><span class="accent">my bot</span></h1>
+      <p>You’re White. The engine thinks for about a second per move, so it’s quick to punish a hanging piece and slow to see a long plan. Click a piece, then a square.</p>
+    </div>
+    <div class="controls">
+      <button class="pill solid" id="new" type="button">New game</button>
+      <button class="pill" id="undo" type="button">Take back</button>
+      <button class="pill quiet" id="flip" type="button">Flip board</button>
+    </div>
+  </div>
+
+  <div class="game">
+    <div>
+      <div class="player" id="bot-bar">
+        <span class="dot b"></span>
+        <div><div class="player-name">Surya’s bot</div><div class="player-meta">Black, about 1s per move</div></div>
+        <span class="cap" id="cap-b" aria-label="Pieces the bot has captured"></span>
+      </div>
+      <div class="board-wrap">
+        <div class="board" id="board" role="grid" aria-label="Chess board"></div>
+        <div class="overlay promo" id="promo" aria-label="Choose a piece to promote to"></div>
+        <div class="overlay" id="over">
+          <h2 id="over-title"></h2>
+          <p id="over-sub"></p>
+          <button class="pill solid" type="button" id="again">Play again</button>
+        </div>
+      </div>
+      <div class="player" id="you-bar">
+        <span class="dot w"></span>
+        <div><div class="player-name">You</div><div class="player-meta">White</div></div>
+        <span class="cap" id="cap-w" aria-label="Pieces you have captured"></span>
       </div>
     </div>
-  </header>
 
-  <main>
+    <aside class="side">
+      <div class="panel"><small>Status</small><p class="status" id="status" aria-live="polite">Your move.</p></div>
+      <div class="panel"><small>Moves</small><div class="moves" id="moves"></div></div>
+      <div class="panel tip">Tip: it plays the opening sensibly and gets a little aimless in quiet endgames. Trade down and outlast it.</div>
+    </aside>
+  </div>
 
-    <section class="intro">
-      <div class="container">
-        <div class="section-label">Chess</div>
-        <h1>Play my bot</h1>
-        <p>
-          You’re White. The engine searches about a second per move with iterative deepening and
-          alpha-beta pruning, so it’s quick to punish a hanging piece and slow to see a long plan.
-          Click a piece, then a square.
-        </p>
-        <div class="actions">
-          <button class="btn btn-primary" id="new" type="button">New game</button>
-          <button class="btn btn-outline" id="undo" type="button">Take back</button>
-          <button class="btn btn-outline" id="flip" type="button">Flip board</button>
-        </div>
-      </div>
-    </section>
+</main>
 
-    <section class="play" style="padding-top: 28px;">
-      <div class="container">
-        <div class="game">
-          <div>
-            <div class="player" id="bot-bar">
-              <span class="dot b"></span>
-              <div><div class="player-name">Surya’s bot</div><div class="player-meta">Black, ~1s per move</div></div>
-              <span class="cap" id="cap-b" aria-label="Pieces the bot has captured"></span>
-            </div>
-            <div class="board-wrap">
-              <div class="board" id="board" role="grid" aria-label="Chess board"></div>
-              <div class="overlay promo" id="promo" aria-label="Choose a piece to promote to"></div>
-              <div class="overlay" id="over">
-                <h2 id="over-title"></h2>
-                <p id="over-sub"></p>
-                <button class="btn btn-primary" type="button" id="again">Play again</button>
-              </div>
-            </div>
-            <div class="player" id="you-bar">
-              <span class="dot w"></span>
-              <div><div class="player-name">You</div><div class="player-meta">White</div></div>
-              <span class="cap" id="cap-w" aria-label="Pieces you have captured"></span>
-            </div>
-          </div>
-
-          <aside class="side">
-            <div>
-              <div class="section-label">Status</div>
-              <p class="status" id="status" aria-live="polite">Your move.</p>
-            </div>
-            <div>
-              <div class="section-label">Moves</div>
-              <div class="moves" id="moves"></div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section id="how">
-      <div class="container">
-        <div class="section-label">How it works</div>
-        <div class="spec">
-          <div class="spec-row">
-            <div class="spec-cat">Rules</div>
-            <div class="spec-text">Full legal move generation including castling, en passant, and promotion. Draws by stalemate, threefold repetition, the fifty-move rule, and insufficient material.</div>
-          </div>
-          <div class="spec-row">
-            <div class="spec-cat">Search</div>
-            <div class="spec-text">Negamax with alpha-beta pruning, capture-first move ordering, and a short quiescence search, deepening iteratively until a one-second budget runs out.</div>
-          </div>
-          <div class="spec-row">
-            <div class="spec-cat">Evaluation</div>
-            <div class="spec-text">Material plus piece-square tables, which is why it develops sensibly in the opening and goes a little aimless in quiet endgames.</div>
-          </div>
-          <div class="spec-row">
-            <div class="spec-cat">Runtime</div>
-            <div class="spec-text">Plain JavaScript, no libraries. The search runs in a Web Worker so the page never freezes while it thinks.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <a href="index.html">Back to the portfolio</a>
-      <span>Built by hand. No framework, no tracking.</span>
+<section class="how">
+  <div class="container">
+    <h2 class="title">How it <span class="accent">works</span></h2>
+    <div class="xp-grid">
+      <div class="xp"><div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+        <div><h3>Every rule</h3><p>Full legal move generation with castling, en passant and promotion. Draws by stalemate, threefold repetition, the fifty-move rule and insufficient material.</p></div>
+      </div></div>
+      <div class="xp"><div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.500" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="3.500" cy="19.500" r="1.500"/><circle cx="9" cy="19.500" r="1.500"/><path d="M11 6l-4 4.200M13 6l4 4.200M5.300 13.800l-1.300 4.200M6.900 13.800l1.600 4.200"/></svg></div>
+        <div><h3>Search</h3><p>Negamax with alpha-beta pruning, capture-first move ordering and a short quiescence search, deepening one level at a time until a one-second budget runs out.</p></div>
+      </div></div>
+      <div class="xp"><div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M5 7h14M5 7l-3 7a3.500 3.500 0 0 0 6 0L5 7zM19 7l-3 7a3.500 3.500 0 0 0 6 0l-3-7zM8 21h8"/></svg></div>
+        <div><h3>Evaluation</h3><p>Material plus piece-square tables: a score for what each side has and where it stands. Simple on purpose, which is why it has no long-term plans.</p></div>
+      </div></div>
+      <div class="xp"><div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+        <div><h3>No libraries</h3><p>Plain JavaScript in one file. The search runs in a Web Worker, so the page never freezes while the bot thinks.</p></div>
+      </div></div>
     </div>
-  </footer>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <span>Surya Partap Singh</span>
+    <div class="more">
+      <a href="world.html">Drive through my 3D lakehouse</a>
+      <a href="home.html">Back to my portfolio</a>
+      <a href="index.html">Plain text version</a>
+    </div>
+    <div class="socials">
+      <a href="https://linkedin.com/in/surya6032/" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.06c.53-1 1.83-1.9 3.76-1.9 4.02 0 4.38 2.4 4.38 5.5V21h-4v-5.3c0-1.3-.02-2.9-1.76-2.9-1.77 0-2.04 1.4-2.04 2.8V21h-4z"/></svg></a>
+      <a href="https://github.com/Surya6032" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.16 1.18a10.9 10.9 0 0 1 5.76 0c2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg></a>
+      <a href="mailto:psurya.924@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>
+    </div>
+  </div>
+</footer>
 
 <script id="engine" type="text/plain">
 // ─── Engine: pure functions over an immutable position object ───────────────
@@ -742,14 +603,6 @@ function think(p, ms_budget, maxDepth) {
   $('again').addEventListener('click', newGame);
   $('undo').addEventListener('click', undo);
   $('flip').addEventListener('click', function () { flipped = !flipped; render(); });
-
-  // Theme toggle — same behavior and storage key as the portfolio
-  var root = document.documentElement;
-  $('themeToggle').addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-  });
 
   newGame();
 })();
