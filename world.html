@@ -3,119 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Surya Partap Singh · The Lakehouse</title>
-<meta name="description" content="Drive through Surya Partap Singh’s data lakehouse: Bronze, Silver, and Gold. A hand-built WebGL portfolio.">
+<title>3D World | Surya Partap Singh</title>
+<meta name="description" content="Drive a record through Surya Partap Singh’s data lakehouse: Bronze, Silver, the quality gate, and Gold. A hand-built WebGL portfolio.">
 <meta property="og:title" content="Surya Partap Singh · The Lakehouse">
 <meta property="og:description" content="A data engineer’s portfolio you can drive through.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231c1a17'/%3E%3Ctext x='16' y='21.5' font-family='Arial,sans-serif' font-size='14' font-weight='700' fill='white' text-anchor='middle'%3ESS%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#ffc53d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2318191f'/%3E%3Ctext x='15' y='22' font-family='monospace' font-size='18' font-weight='700' fill='white' text-anchor='middle'%3ES%3C/text%3E%3Ccircle cx='25' cy='21' r='2.5' fill='%23ffc53d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#1c1a17; --ink-2:#3d3933; --muted:#77716a; --rule:#e3ded6; --card:rgba(251,250,248,.93); }
-  * { box-sizing:border-box; }
-  html, body { margin:0; height:100%; overflow:hidden; background:#e7e1d5; color:var(--ink);
-    font:15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Helvetica, Arial, sans-serif; -webkit-font-smoothing:antialiased; }
-  canvas { position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; outline:none; }
-  a { color:var(--ink); text-underline-offset:3px; text-decoration-thickness:1px; }
-  :focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
-
-  .ui { position:fixed; z-index:2; }
-  .panel { background:var(--card); border:1px solid var(--rule); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
-
-  .brand { top:16px; left:18px; line-height:1.3; }
-  .brand a { font-weight:600; text-decoration:none; }
-  .brand span { display:block; color:var(--muted); font-size:13px; }
-
-  .topr { top:14px; right:16px; display:flex; gap:6px; }
-  .btn { font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; color:var(--ink); text-decoration:none; cursor:pointer; }
-  .btn:hover { border-color:#cfc8bd; }
-
-  .steps { top:14px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:2px; padding:4px; border-radius:999px; }
-  .steps button { font:inherit; font-size:12.5px; padding:5px 10px; border-radius:999px; border:0; background:none; color:var(--muted); cursor:pointer; white-space:nowrap; }
-  .steps button:hover { color:var(--ink); }
-  .steps button.seen { color:var(--ink); }
-  .steps button.seen::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--c); margin-right:6px; vertical-align:1px; }
-  .steps button.here { background:var(--ink); color:#fbfaf8; }
-  .steps .sep { width:1px; height:16px; background:var(--rule); margin:0 4px; flex:none; }
-
-  .card { left:18px; top:62px; width:min(380px, calc(100vw - 36px)); max-height:calc(100vh - 140px); overflow:auto;
-    padding:18px 20px; border-radius:14px; box-shadow:0 10px 30px rgba(40,30,20,.08);
-    opacity:0; transform:translateY(8px); transition:opacity .25s, transform .25s; pointer-events:none; }
-  .card.show { opacity:1; transform:none; pointer-events:auto; }
-  .card .k { font-size:12px; color:var(--muted); margin:0 0 2px; }
-  .card h3 { font-size:17px; font-weight:600; letter-spacing:-.01em; margin:0 0 6px; }
-  .card p, .card li { font-size:14px; color:var(--ink-2); margin:0; }
-  .card p + p { margin-top:8px; }
-  .card .d { color:var(--muted); margin:-4px 0 6px; }
-  .card ul { padding-left:16px; margin:6px 0 0; }
-  .card li + li { margin-top:6px; }
-  .card b { color:var(--ink); font-weight:600; }
-  .card .links { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:10px; }
-
-  .hint { right:16px; bottom:18px; font-size:12.5px; color:var(--muted); padding:6px 12px; border-radius:999px; white-space:nowrap; }
-
-  .joy { position:fixed; z-index:3; width:96px; height:96px; margin:-48px 0 0 -48px; border-radius:50%;
-    border:1.5px solid rgba(28,26,23,.25); background:rgba(251,250,248,.25); pointer-events:none; display:none; }
-  .joy i { position:absolute; left:50%; top:50%; width:36px; height:36px; margin:-18px 0 0 -18px; border-radius:50%; background:rgba(28,26,23,.35); }
-
-  #intro { position:fixed; inset:0; z-index:5; display:grid; place-items:center; padding:20px;
-    background:rgba(231,225,213,.45); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); transition:opacity .35s; }
-  #intro.gone { opacity:0; pointer-events:none; }
-  #intro .box { max-width:420px; padding:26px 28px; border-radius:16px; box-shadow:0 20px 50px rgba(40,30,20,.12); }
-  #intro h1 { font-size:20px; margin:0; letter-spacing:-.01em; }
-  #intro .role { color:var(--muted); margin:0 0 14px; }
-  #intro p { margin:0 0 10px; color:var(--ink-2); }
-  #intro .row { display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; align-items:center; }
-  #intro .go { font:inherit; font-weight:500; padding:9px 18px; border-radius:999px; border:0; background:var(--ink); color:#fbfaf8; cursor:pointer; }
-  #intro .alt { font-size:14px; padding:9px 12px; }
-  #intro .keys { font-size:12.5px; color:var(--muted); margin-top:14px; }
-
-  [hidden] { display:none !important; }
-  #nogl { position:fixed; inset:0; z-index:9; display:grid; place-items:center; padding:24px; text-align:center; background:#e7e1d5; }
-
-  @media (max-width: 1080px) {
-    .card { top:112px; }
-    .steps { top:64px; left:12px; right:12px; transform:none; overflow-x:auto; scrollbar-width:none; justify-content:flex-start; }
-    .steps::-webkit-scrollbar { display:none; }
+  :root {
+    --bg: #18191f; --line: rgba(255,255,255,.12); --text: #fff; --text-2: rgba(255,255,255,.76); --text-3: rgba(255,255,255,.5);
+    --accent: #ffc53d;            /* keep in sync with home.html */
+    --panel: rgba(27,28,36,.88);
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
   }
-  @media (max-width: 640px) {
-    .brand { left:14px; top:14px; }
-    .topr { right:12px; }
-    .hint { display:none; }
-    .card { left:12px; right:12px; top:auto; bottom:12px; width:auto; max-height:42vh; padding:16px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font: 400 14px/1.6 var(--mono); -webkit-font-smoothing: antialiased; }
+  canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  [hidden] { display: none !important; }
+  .accent { color: var(--accent); }
+
+  .ui { position: fixed; z-index: 2; }
+  .panel { background: var(--panel); border: 1px solid var(--line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+
+  .logo { top: 14px; left: 22px; font-size: 1.9rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,.5); }
+  .topr { top: 14px; right: 20px; display: flex; align-items: center; gap: 18px; font-weight: 500; padding: 5px 5px 5px 20px; border-radius: 999px; }
+  .topr a:hover { color: var(--accent); }
+  .topr .hire { background: var(--accent); color: var(--bg); border-radius: 999px; padding: 5px 18px; font-weight: 700; }
+  .topr .hire:hover { color: var(--bg); filter: brightness(1.1); }
+
+  .steps { top: 14px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; padding: 5px; border-radius: 999px; }
+  .steps button { font-size: 12.5px; font-weight: 500; padding: 6px 11px; border-radius: 999px; color: var(--text-3); white-space: nowrap; transition: color .15s, background .15s; }
+  .steps button:hover { color: var(--text); }
+  .steps button.seen { color: var(--text); }
+  .steps button.seen::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--c); margin-right: 7px; vertical-align: 1px; }
+  .steps button.here { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .steps button.here::before { background: var(--bg); }
+  .steps .sep { width: 1px; height: 16px; background: var(--line); margin: 0 5px; flex: none; }
+
+  .card { left: 20px; top: 76px; width: min(400px, calc(100vw - 40px)); max-height: calc(100vh - 170px); overflow: auto;
+    padding: 22px 24px; border-radius: 22px; box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; pointer-events: none; scrollbar-color: #3a3b46 transparent; }
+  .card.show { opacity: 1; transform: none; pointer-events: auto; }
+  .card .k { font-size: 12.5px; color: var(--accent); margin: 0 0 4px; }
+  .card h3 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; margin: 0 0 8px; }
+  .card p, .card li { font-size: 13.5px; color: var(--text-2); margin: 0; }
+  .card p + p { margin-top: 8px; }
+  .card .d { color: var(--text-3); margin: -4px 0 8px; }
+  .card ul { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+  .card li { padding-left: 16px; position: relative; }
+  .card li::before { content: ""; position: absolute; left: 0; top: .72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .card b { color: var(--text); font-weight: 700; }
+  .card .links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; }
+  .card .links a, .card a.inline { color: var(--accent); font-weight: 600; }
+  .card .links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .card .note { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid var(--line); color: var(--text); font-size: 13px; }
+  .card .note.ok { border-color: var(--accent); }
+  .card .again { margin-top: 12px; height: 40px; padding: 0 18px; border-radius: 999px; background: var(--accent); color: var(--bg); font-weight: 700; }
+
+  .run { left: 20px; bottom: 18px; padding: 8px 16px; border-radius: 999px; font-size: 13px; display: flex; gap: 12px; align-items: center; font-variant-numeric: tabular-nums; }
+  .run b { color: var(--accent); font-weight: 700; }
+  .run span { color: var(--text-2); }
+  .hint { right: 20px; bottom: 18px; font-size: 12.5px; color: var(--text-2); padding: 8px 14px; border-radius: 999px; white-space: nowrap; }
+  #map { right: 20px; bottom: 64px; width: 168px; height: 168px; border-radius: 22px; padding: 6px; }
+  #map canvas { width: 100%; height: 100%; display: block; }
+
+  .joy { position: fixed; z-index: 3; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; border: 1.5px solid rgba(255,197,61,.6); background: rgba(255,255,255,.06); pointer-events: none; display: none; }
+  .joy i { position: absolute; left: 50%; top: 50%; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: var(--accent); opacity: .85; }
+
+  #intro { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(24,25,31,.62); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transition: opacity .35s; }
+  #intro.gone { opacity: 0; pointer-events: none; }
+  #intro .box { width: min(560px, 100%); padding: clamp(24px, 4vw, 38px); border-radius: 26px; box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+  #intro .kicker { font-size: 1.05rem; }
+  #intro h1 { font-size: clamp(2.1rem, 6.4vw, 3.5rem); line-height: 1.1; font-weight: 700; letter-spacing: -0.03em; margin: 6px 0 16px; }
+  #intro p { margin: 0 0 8px; color: var(--text-2); font-size: 14.5px; }
+  #intro .row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; align-items: center; }
+  .pill { display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 999px; border: 1.5px solid var(--accent); color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: .84rem; letter-spacing: .04em; transition: background .25s, color .25s; }
+  .pill:hover { background: var(--accent); color: var(--bg); }
+  .pill.solid { background: var(--accent); color: var(--bg); font-weight: 700; }
+  .pill.solid:hover { filter: brightness(1.1); }
+  #intro .keys { font-size: 12.5px; color: var(--text-3); margin-top: 16px; }
+
+  #nogl { position: fixed; inset: 0; z-index: 9; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg); }
+  #nogl a { color: var(--accent); }
+
+  @media (max-width: 1400px) {
+    .steps { top: 64px; left: 12px; right: 12px; transform: none; overflow-x: auto; scrollbar-width: none; justify-content: flex-start; }
+    .steps::-webkit-scrollbar { display: none; }
+    .card { top: 124px; max-height: calc(100vh - 220px); }
+  }
+  @media (max-width: 680px) {
+    .logo { left: 14px; top: 12px; font-size: 1.6rem; }
+    .topr { right: 12px; top: 12px; padding: 0; border: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; } .topr a:not(.hire) { display: none; }
+    .hint, #map { display: none; }
+    .run { left: 12px; top: 116px; bottom: auto; padding: 6px 12px; font-size: 12px; }
+    .card { left: 12px; right: 12px; top: auto; bottom: 12px; width: auto; max-height: 40vh; padding: 16px 18px; border-radius: 18px; }
   }
 </style>
 </head>
 <body>
 
-<canvas id="gl" tabindex="0" aria-label="A 3D island shaped like a data lakehouse. Use the text version for the same content."></canvas>
+<canvas id="gl" tabindex="0" aria-label="A 3D island at night, shaped like a data lakehouse. Use the Professional page for the same content as text."></canvas>
 
-<div class="ui brand"><a href="index.html">Surya Partap Singh</a><span>Senior Data Engineer</span></div>
-<div class="ui topr">
-  <a class="btn panel" href="index.html">Text version</a>
-  <a class="btn panel" href="resume.pdf">Resume</a>
+<a class="ui logo" href="index.html">Surya<span class="accent">.</span></a>
+<div class="ui topr panel">
+  <a href="index.html">Professional</a>
+  <a href="chess.html">Chess</a>
+  <a class="hire" href="mailto:psurya.924@gmail.com">Hire me</a>
 </div>
 <nav class="ui steps panel" id="steps" aria-label="Jump to a place"></nav>
 <section class="ui card panel" id="card" aria-live="polite"></section>
-<div class="ui hint panel" id="hint">WASD or arrows to drive · Shift boost · Space jump · R reset</div>
+<div class="ui run panel" id="run" aria-live="off"><b id="runTime">0:00</b><span id="runNext">Next stop: Bronze</span></div>
+<div class="ui panel" id="map" aria-hidden="true"><canvas id="mapc" width="312" height="312"></canvas></div>
+<div class="ui hint panel" id="hint">WASD or arrows to drive, Shift boost, Space jump, R reset, M map</div>
 <div class="joy" id="joy"><i></i></div>
 
 <div id="intro">
   <div class="box panel">
-    <h1>Surya Partap Singh</h1>
-    <p class="role">Senior Data Engineer, Dallas</p>
-    <p>This island is a data lakehouse. You’re a record entering my pipeline.</p>
-    <p>Drive from raw to gold: Bronze, Silver, the quality gate, then Gold. Each layer is a part of my career.</p>
+    <span class="kicker">Senior Data Engineer</span>
+    <h1>Drive through<br><span class="accent">my lakehouse</span></h1>
+    <p>You’re a raw record entering my pipeline. Carry it through Bronze, Silver, the quality gate and Gold, in that order, then deliver it to Consumers.</p>
+    <p>Each stop is a part of my career. The clock starts when you do.</p>
     <div class="row">
-      <button class="go" id="go" type="button">Start driving</button>
-      <a class="alt" href="index.html">Read the text version</a>
+      <button class="pill solid" id="go" type="button">Start driving</button>
+      <a class="pill" href="index.html">Skip to the portfolio</a>
     </div>
     <p class="keys" id="keys">WASD or arrow keys to drive. Or click and drag toward where you want to go.</p>
   </div>
 </div>
 
 <div id="nogl" hidden>
-  <div><p>This page needs WebGL 2, which your browser doesn’t support.</p><p><a href="index.html">Go to the text version</a></p></div>
+  <div><p>This page needs WebGL 2, which your browser doesn’t support.</p><p><a href="index.html">Go to the portfolio</a></p></div>
 </div>
-<noscript><p style="position:fixed;inset:0;z-index:10;background:#e7e1d5;padding:40px">This page needs JavaScript. <a href="index.html">Read the text version.</a></p></noscript>
+<noscript><p style="position:fixed;inset:0;z-index:10;background:#18191f;color:#fff;padding:40px">This page needs JavaScript. <a href="index.html" style="color:#ffc53d">Go to the portfolio.</a></p></noscript>
 
 <script>
 (function () {
@@ -173,20 +198,24 @@ out vec4 o;
 void main(){
   if (uMode == 3) { o = vec4(uColor, uAlpha); return; }
   if (uMode == 5) { o = vec4(uColor * vCol, vUv.x); return; }
+  float f = smoothstep(uFog.x, uFog.y, distance(uCam, vW));
+  if (uMode == 7) { o = vec4(uColor * vCol * texture(uTex, vUv).a * uAlpha * (1.0 - f), 1.0); return; }
   vec3 n = normalize(vN);
   vec3 base = uColor * vCol;
-  if (uMode == 2) { vec4 t = texture(uTex, vUv); base = mix(base, t.rgb, t.a); }
+  vec4 t = vec4(0.0);
+  if (uMode == 2 || uMode == 6) t = texture(uTex, vUv);
+  if (uMode == 2) base = mix(base, t.rgb, t.a);
   float dif = max(dot(n, uLight), 0.0);
   float hemi = 0.5 + 0.5 * n.y;
-  vec3 col = base * (0.30 + 0.30 * hemi + 0.55 * dif);
+  vec3 col = base * (0.34 + 0.22 * hemi + 0.44 * dif);
+  if (uMode == 6) col = mix(col, t.rgb, t.a);
   if (uMode == 1) {
     float w = sin(vW.x * 0.55 + uTime * 1.2) * sin(vW.z * 0.5 - uTime * 0.9) + 0.5 * sin((vW.x + vW.z) * 1.3 + uTime * 2.0);
-    col = base * (0.92 + 0.06 * w);
+    col = base * (0.74 + 0.07 * w);
     vec3 v = normalize(uCam - vW);
     col += vec3(1.0) * (0.10 * pow(1.0 - max(v.y, 0.0), 2.0) + 0.10 * smoothstep(1.0, 1.4, w));
   }
   col = mix(col, base * 1.15, uEm);
-  float f = smoothstep(uFog.x, uFog.y, distance(uCam, vW));
   o = vec4(mix(col, uFogColor, f), uAlpha);
 }`;
 function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
@@ -278,10 +307,12 @@ function tex(w, h, draw) {
   if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8);
   return t;
 }
-const FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif';
-function groundText(text, w, h, weight) {
+const FONT = '"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace';
+// Soft radial falloff used for every pool of light on the ground.
+const GLOW = tex(128, 128, (x, w, h) => { const g = x.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(0.3, "rgba(255,255,255,.5)"); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.fillRect(0, 0, w, h); });
+function groundText(text, w, h, weight, color) {
   return tex(w, h, (x) => {
-    x.fillStyle = "rgba(250,246,236,0.9)"; x.textAlign = "center"; x.textBaseline = "middle";
+    x.fillStyle = color || "rgba(255,255,255,0.92)"; x.textAlign = "center"; x.textBaseline = "middle";
     let size = h * 0.8; x.font = `${weight || 800} ${size}px ${FONT}`;
     while (x.measureText(text).width > w * 0.96) { size *= 0.95; x.font = `${weight || 800} ${size}px ${FONT}`; }
     if ("letterSpacing" in x) x.letterSpacing = `${size * 0.04}px`;
@@ -303,20 +334,21 @@ function crateTex(label) {
 function screenTex(label, seed) {
   const r = rng(seed);
   return tex(256, 170, (x, w, h) => {
-    x.fillStyle = "#1f2a30"; x.fillRect(0, 0, w, h);
-    x.fillStyle = "#8fd3e8"; x.font = `700 26px ${FONT}`; x.fillText(label, 18, 36);
-    for (let i = 0; i < 7; i++) { const bh = 20 + r() * 80; x.fillStyle = i % 3 === 0 ? "#e2b84a" : "#5fb0d0"; x.fillRect(22 + i * 31, h - 18 - bh, 20, bh); }
+    x.fillStyle = "#12151c"; x.fillRect(0, 0, w, h);
+    x.fillStyle = "#ffffff"; x.font = `700 26px ${FONT}`; x.fillText(label, 18, 36);
+    for (let i = 0; i < 7; i++) { const bh = 20 + r() * 80; x.fillStyle = i % 3 === 0 ? "#ffc53d" : "#6fc3ff"; x.fillRect(22 + i * 31, h - 18 - bh, 20, bh); }
   });
 }
 
 /* ───────────── palette ───────────── */
 const C = {
-  fog: hex("#e7e1d5"), sea: hex("#9dbcc4"), sand: hex("#dccba4"), grass: hex("#b6bf8b"), road: hex("#e6dcc6"), rim: hex("#d3cabb"),
-  bronze: hex("#c48c57"), silver: hex("#aab5bd"), gold: hex("#e3b94a"), raw: hex("#7fc4e8"),
-  trunk: hex("#8a6a4a"), leaf: [hex("#6f8f4e"), hex("#7f9d5a"), hex("#5f8046"), hex("#89a35e")], rock: hex("#a7a197"),
-  rack: hex("#34322f"), belt: hex("#3e3c39"), post: hex("#8f8a82"), white: hex("#f3efe8"), dark: hex("#3a3632"),
-  car: hex("#3a7ca5"), tire: hex("#2a2826"), glass: hex("#c9dde6"), green: hex("#58c27d"), red: hex("#e05a4f"),
-  tileL: hex("#efe8da"), tileD: hex("#7a6f60"), mail: hex("#3a7ca5"), dust: hex("#d9ccb3"), splash: hex("#e8f2f5")
+  fog: hex("#18191f"), sea: hex("#0f1116"), sand: hex("#2d2f3a"), grass: hex("#22232b"), road: hex("#30323d"), rim: hex("#3c3e4b"),
+  bronze: hex("#ff8f5a"), silver: hex("#cfd3dc"), gold: hex("#ffc53d"), raw: hex("#6fc3ff"),
+  trunk: hex("#4d423b"), leaf: [hex("#2f4d47"), hex("#37584f"), hex("#2a433f"), hex("#3d5f52")], rock: hex("#484a57"),
+  rack: hex("#0f1014"), belt: hex("#0d0e12"), post: hex("#5c5e6e"), white: hex("#d4d6e0"), dark: hex("#15161b"),
+  car: hex("#ffc53d"), cabin: hex("#f4f4f8"), tire: hex("#0b0c0f"), glass: hex("#9fd0ff"), green: hex("#5be38a"), red: hex("#ff5e57"),
+  tileL: hex("#b7b9c6"), tileD: hex("#696b7d"), mail: hex("#ffc53d"), dust: hex("#6d6f7e"), splash: hex("#dfe6ff"),
+  lamp: hex("#ffd98a"), screen: hex("#6fc3ff")
 };
 
 /* ───────────── world layout ───────────── */
@@ -329,9 +361,11 @@ const ROADS = [
   [[9, 27.5], [21, 36]]
 ];
 const GATE = { x: 15, z: -1 };
-const statics = [], shadows = [], colliders = [], keepOut = [];
+const statics = [], shadows = [], colliders = [], keepOut = [], glows = [], bulbs = [];
 function add(m, M, color, o) { o = o || {}; statics.push({ m, M, N: nmat(M), c: color, em: o.em || 0, mode: o.mode || 0, tex: o.tex || null }); }
-function shadow(x, z, sx, sz, ry, a) { const M = TRS(x, 0.09, z, ry || 0, sx, 0.01, sz === undefined ? sx : sz); shadows.push({ m: M_.cyl24 ? M_.cyl24 : null, M, N: nmat(M), c: [0.18, 0.15, 0.1], a: a || 0.16 }); }
+function shadow(x, z, sx, sz, ry, a) { const M = TRS(x, 0.09, z, ry || 0, sx, 0.01, sz === undefined ? sx : sz); shadows.push({ m: M_.cyl24 ? M_.cyl24 : null, M, N: nmat(M), c: [0, 0, 0], a: (a || 0.16) * 1.9 }); }
+function glow(x, z, sx, sz, color, a, ry) { const M = TRS(x, 0.12, z, ry || 0, sx, 1, sz); glows.push({ m: M_.plane, M, N: nmat(M), c: color.map(v => v * a) }); }
+function bulb(m, M, color) { bulbs.push({ m, M, N: nmat(M), c: color }); }
 function collide(x, z, r) { colliders.push({ x, z, r }); }
 
 // island and sea
@@ -340,7 +374,7 @@ add(M_.cyl48, TRS(0, -1.4, 0, 0, R * 2 + 5, 2.6, R * 2 + 5), C.sand);
 add(M_.cyl48, TRS(0, -0.5, 0, 0, R * 2, 1, R * 2), C.grass);
 
 // lakes
-for (const k in LAKES) { const L = LAKES[k]; add(M_.cyl24, TRS(L.x, 0.02, L.z, 0, (L.r + 0.9) * 2, 0.06, (L.r + 0.9) * 2), C.rim); add(M_.cyl24, TRS(L.x, 0.04, L.z, 0, L.r * 2, 0.06, L.r * 2), L.c, { mode: 1 }); }
+for (const k in LAKES) { const L = LAKES[k]; add(M_.cyl24, TRS(L.x, 0.02, L.z, 0, (L.r + 0.9) * 2, 0.06, (L.r + 0.9) * 2), C.rim); add(M_.cyl24, TRS(L.x, 0.04, L.z, 0, L.r * 2, 0.06, L.r * 2), L.c, { mode: 1 }); glow(L.x, L.z, L.r * 5, L.r * 5, L.c, 0.26); }
 
 // roads
 const roadSegs = [];
@@ -355,11 +389,13 @@ ROADS.forEach(path => {
 const nearRoad = (x, z, d) => roadSegs.some(s => distSeg(x, z, s[0], s[1], s[2], s[3]) < d);
 
 // ground text
-function label(text, x, z, w, h, weight) { const px = 1024, py = Math.round(px * h / w); add(M_.plane, TRS(x, 0.06, z, 0, w, 1, h), C.grass, { mode: 2, tex: groundText(text, px, Math.max(64, py), weight) }); }
+const labelRects = [];
+const onLabel = (x, z) => labelRects.some(r => Math.abs(x - r[0]) < r[2] && Math.abs(z - r[1]) < r[3]);
+function label(text, x, z, w, h, weight, color) { labelRects.push([x, z, w / 2 + 2, h / 2 + 2.2]); const px = 1024, py = Math.round(px * h / w); add(M_.plane, TRS(x, 0.06, z, 0, w, 1, h), C.grass, { mode: 6, tex: groundText(text, px, Math.max(64, py), weight, color) }); }
 label("SURYA PARTAP SINGH", 0, 42.5, 28, 3.4);
-label("SENIOR DATA ENGINEER", 0, 46.2, 17, 1.6, 600);
-label("BRONZE", -30, 20.6, 9, 1.9); label("SILVER", -13.5, -13, 8, 1.7); label("GOLD", 31, 20.8, 7, 1.9);
-label("QUALITY GATE", 24, -7, 11, 1.4); label("SOURCES", -14.5, 44, 8, 1.4); label("CONSUMERS", 47.5, 21.5, 9, 1.3);
+label("SENIOR DATA ENGINEER", 0, 46.2, 17, 1.6, 600, "#ffc53d");
+label("BRONZE", -30, 20.6, 9, 1.9, 800, "#ff8f5a"); label("SILVER", -13.5, -13, 8, 1.7, 800, "#cfd3dc"); label("GOLD", 31, 20.8, 7, 1.9, 800, "#ffc53d");
+label("QUALITY GATE", 24, -7, 11, 1.4, 800, "#5be38a"); label("SOURCES", -14.5, 44, 8, 1.4); label("CONSUMERS", 47.5, 16.5, 9, 1.3, 800, "#6fc3ff");
 label("TOOLS", -32, -18.5, 7, 1.6); label("CHESS", 37, -21, 7, 1.6); label("CONTACT", 27, 46, 9, 1.6);
 
 // sources: server racks with blinking LEDs
@@ -368,7 +404,7 @@ const leds = [];
   add(M_.box, TRS(x, 1.9, 40.5, 0, 2.2, 3.8, 1.8), C.rack); shadow(x, 40.5, 3, 2.6); collide(x, 40.5, 1.4);
   for (let j = 0; j < 5; j++) leds.push({ M: TRS(x - 0.6 + (j % 3) * 0.6, 1.2 + j * 0.5, 41.42, 0, 0.22, 0.12, 0.05), phase: i * 1.7 + j * 2.3, speed: 1.5 + (j % 3) });
 });
-keepOut.push([-14.5, 40.5, 7]);
+keepOut.push([-14.5, 40.5, 7]); glow(-14.5, 43, 16, 9, C.green, 0.16);
 
 // conveyors (pipelines) with packets
 const conveyors = [];
@@ -406,12 +442,12 @@ const toward = (L, x, z, d) => { const vx = x - L.x, vz = z - L.z, l = Math.hypo
 keepOut.push([GATE.x, GATE.z, 6]);
 
 // consumers: dashboards fed by gold
-[["BI", 47, 4.5], ["REPORTS", 48.5, 10], ["ML", 47, 15.5]].forEach(([t, x, z], i) => {
+[["BI", 43.2, 5.6], ["REPORTS", 47.5, 4.6], ["ML", 51.8, 5.6]].forEach(([t, x, z], i) => {
   add(M_.cyl, TRS(x, 1.3, z, 0, 0.35, 2.6, 0.35), C.post);
-  add(M_.box, TRS(x, 3.3, z, -Math.PI / 2, 3.4, 2.2, 0.25), C.dark, { mode: 2, tex: screenTex(t, 7 + i), em: 0.35 });
-  collide(x, z, 0.6); shadow(x, z, 2.6, 1.2, -Math.PI / 2);
+  add(M_.box, TRS(x, 3.5, z, 0, 3.6, 2.4, 0.25), C.dark, { mode: 2, tex: screenTex(t, 7 + i), em: 1 }); glow(x, z + 2.6, 11, 9, C.screen, 0.3);
+  collide(x, z, 0.6); shadow(x, z + 0.4, 3.8, 1.2);
 });
-keepOut.push([47.5, 10, 8]);
+keepOut.push([47.5, 7, 9]);
 
 // chess plaza
 const CH = { x: 28, z: -30 };
@@ -453,6 +489,31 @@ const crates = CRATE_LABELS.map((l, i) => {
 });
 keepOut.push([-28, -26, 9]);
 
+// street lamps: one every dozen metres, alternating sides, skipped where something is in the way
+{
+  const free = (x, z) => {
+    if (Math.hypot(x, z) > R - 4) return false;
+    for (const k in LAKES) if (Math.hypot(x - LAKES[k].x, z - LAKES[k].z) < LAKES[k].r + 1.8) return false;
+    if (nearRoad(x, z, 3.1)) return false;
+    if (onLabel(x, z)) return false;
+    for (const k of keepOut) if (k.seg && distSeg(x, z, ...k.seg) < 1.7) return false;
+    for (const c of colliders) if (Math.hypot(x - c.x, z - c.z) < c.r + 1.2) return false;
+    return true;
+  };
+  roadSegs.forEach(([ax, az, bx, bz], si) => {
+    const dx = bx - ax, dz = bz - az, len = Math.hypot(dx, dz), n = Math.max(1, Math.round(len / 12));
+    for (let i = 0; i < n; i++) {
+      const t = (i + 0.5) / n, first = (i + si) % 2 ? 1 : -1;
+      for (const side of [first, -first]) {
+        const x = ax + dx * t - dz / len * 3.7 * side, z = az + dz * t + dx / len * 3.7 * side;
+        if (!free(x, z)) continue;
+        add(M_.cyl, TRS(x, 2.2, z, 0, 0.2, 4.4, 0.2), C.post); bulb(M_.ico, TRS(x, 4.6, z, 0, 0.75), C.lamp);
+        collide(x, z, 0.4); glow(x, z, 17, 17, C.lamp, 0.42); break;
+      }
+    }
+  });
+}
+
 // scatter trees and rocks
 {
   const r = rng(42); let placed = 0, tries = 0;
@@ -461,7 +522,7 @@ keepOut.push([-28, -26, 9]);
     for (const k in LAKES) if (Math.hypot(x - LAKES[k].x, z - LAKES[k].z) < LAKES[k].r + 4 + pad) return true;
     if (nearRoad(x, z, 4 + pad)) return true;
     for (const k of keepOut) { if (k.seg) { if (distSeg(x, z, ...k.seg) < 2.6 + pad) return true; } else if (Math.hypot(x - k[0], z - k[1]) < k[2] + pad) return true; }
-    if (Math.hypot(x, z - 44) < 15 && Math.abs(z - 44) < 4) return true;
+    if (onLabel(x, z)) return true;
     for (const c of colliders) if (Math.hypot(x - c.x, z - c.z) < c.r + 2.2) return true;
     return false;
   };
@@ -486,52 +547,79 @@ keepOut.push([-28, -26, 9]);
 const BAKED = bake(statics.filter(s => s.mode === 0 && !s.em));
 const LIVE = statics.filter(s => !(s.mode === 0 && !s.em));
 const SHADOWS = bake(shadows.map(s => ({ m: M_.cyl24, M: s.M, N: s.N, c: s.c, a: s.a })), true);
+const GLOWS = bake(glows), BULBS = bake(bulbs);
 const IDENT = I4(), IDENTN = nmat(IDENT), WHITE = [1, 1, 1];
 
 /* ───────────── zones and UI ───────────── */
 const ZONES = {
-  ingest: { x: 0, z: 36, r: 9, tp: [0, 33, Math.PI], name: "Ingest", c: "#7fc4e8",
-    html: `<p class="k">Ingest</p><h3>Surya Partap Singh</h3><p>Senior Data Engineer in Dallas. I build data platforms on Databricks, Spark, and Azure, mostly for healthcare, and have for <span data-years-since="2021-02">5</span> years.</p><p>Follow the road west to Bronze. Or use the bar at the top to jump anywhere.</p><p class="links"><a href="resume.pdf">Resume</a><a href="https://linkedin.com/in/surya6032/">LinkedIn</a><a href="https://github.com/Surya6032">GitHub</a></p>` },
-  bronze: { x: -30, z: 10, r: 18, tp: [-19, 22, Math.atan2(-11, -12)], name: "Bronze", c: "#c48c57", cargo: C.bronze,
-    html: `<p class="k">Bronze · raw</p><h3>Where it started</h3><ul><li><b>B.S. Computer Science</b>, University of North Alabama, 2020.</li><li><b>Data Engineer, Fuge Technologies</b>, 2021. Hadoop and Hive batch pipelines, and incremental Azure Data Factory loads into Azure Data Lake.</li></ul>` },
-  silver: { x: 0, z: -12, r: 13, tp: [2, 0, Math.atan2(-2, -12)], name: "Silver", c: "#9aa6ae", cargo: C.silver,
-    html: `<p class="k">Silver · conformed</p><h3>Data Engineer (contract), Cencora</h3><p class="d">2021 – 2023</p><ul><li>Production ETL on Databricks, Azure Data Factory, and PySpark for clinical, pharmacy, and financial data.</li><li>Canonical single-source-of-truth tables that replaced 3+ redundant copies across business units.</li><li>99%+ pipeline success rate on Databricks Jobs.</li></ul>` },
-  gate: { x: GATE.x, z: GATE.z, r: 6, tp: [11.4, -3.6, Math.atan2(30, 22)], name: "Quality gate", c: "#58c27d",
+  ingest: { x: 0, z: 36, r: 9, tp: [0, 33, Math.PI], name: "Ingest", c: "#6fc3ff",
+    html: `<p class="k">Ingest</p><h3>Surya Partap Singh</h3><p>Senior Data Engineer in Dallas. I build data platforms on Databricks, Spark and Azure, mostly for healthcare, and have for <span data-years-since="2021-02">5</span> years.</p><p>Carry your record west to Bronze, then Silver, the quality gate, Gold and Consumers. The map rings your next stop.</p><p class="links"><a href="resume.pdf">Resume</a><a href="https://linkedin.com/in/surya6032/">LinkedIn</a><a href="https://github.com/Surya6032">GitHub</a></p>` },
+  bronze: { x: -30, z: 10, r: 18, tp: [-19, 22, Math.atan2(-11, -12)], name: "Bronze", c: "#ff8f5a", cargo: C.bronze,
+    html: `<p class="k">Bronze, raw</p><h3>Where it started</h3><ul><li><b>B.S. Computer Science</b>, University of North Alabama, 2020.</li><li><b>Data Engineer, Fuge Technologies</b>, 2021. Hadoop and Hive batch pipelines, and incremental Azure Data Factory loads into Azure Data Lake.</li></ul>` },
+  silver: { x: 0, z: -12, r: 13, tp: [2, 0, Math.atan2(-2, -12)], name: "Silver", c: "#cfd3dc", cargo: C.silver,
+    html: `<p class="k">Silver, conformed</p><h3>Data Engineer (contract), Cencora</h3><p class="d">2021 – 2023</p><ul><li>Production ETL on Databricks, Azure Data Factory and PySpark for clinical, pharmacy and financial data.</li><li>Canonical single-source-of-truth tables that replaced 3+ redundant copies across business units.</li><li>99%+ pipeline success rate on Databricks Jobs.</li></ul>` },
+  gate: { x: GATE.x, z: GATE.z, r: 6, tp: [11.4, -3.6, Math.atan2(30, 22)], name: "Quality gate", c: "#5be38a",
     html: `<p class="k">Quality gate</p><h3>−35% data incidents</h3><p>Great Expectations checks, anomaly detection, and freshness and volume monitors at every layer, enforced as CI/CD deployment gates. Bad data stops here instead of in a dashboard.</p>` },
-  gold: { x: 30, z: 10, r: 18, tp: [19, 21, Math.atan2(11, -11)], name: "Gold", c: "#d9a92e", cargo: C.gold,
-    html: `<p class="k">Gold · business-ready</p><h3>Senior Data Engineer, Cencora</h3><p class="d">2023 – now</p><ul><li><b>Medallion lakehouse.</b> Clinical, financial, and pharmacy data from 10+ sources, 5–10 TB a day. Time-to-insight down 50%.</li><li><b>Financial reporting.</b> A nightly batch job rebuilt on Delta Change Data Feed and Structured Streaming: 24 hours to 15 minutes.</li><li><b>Spark tuning.</b> 30% more pipeline throughput.</li><li><b>Document ingestion.</b> OCR pipelines that turn scanned patient documents into tables for analytics and ML.</li><li>Mentor 3–5 engineers on the team.</li></ul>` },
-  tools: { x: -28, z: -26, r: 11, tp: [-21, -18, Math.atan2(-7, -8)], name: "Tools", c: "#b48b55",
-    html: `<p class="k">Tools</p><h3>What I build with</h3><p>Databricks, Delta Lake, Spark, PySpark, Azure, Airflow, Great Expectations, Python, and SQL.</p><p>Go ahead, push the crates.</p>` },
-  chess: { x: CH.x, z: CH.z, r: 12, tp: [27, -20, Math.PI], name: "Chess", c: "#7a6f60",
-    html: `<p class="k">Chess</p><h3>Play my bot</h3><p>A chess engine I wrote in plain JavaScript: alpha-beta search running in a Web Worker.</p><p class="links"><a href="chess.html">Play it</a></p>` },
-  contact: { x: TW.x, z: TW.z, r: 11, tp: [20, 35, Math.atan2(7, 5)], name: "Contact", c: "#3a7ca5",
+  gold: { x: 30, z: 10, r: 18, tp: [19, 21, Math.atan2(11, -11)], name: "Gold", c: "#ffc53d", cargo: C.gold,
+    html: `<p class="k">Gold, business-ready</p><h3>Senior Data Engineer, Cencora</h3><p class="d">2023 – now</p><ul><li><b>Medallion lakehouse.</b> Clinical, financial and pharmacy data from 10+ sources, 5–10 TB a day. Time-to-insight down 50%.</li><li><b>Financial reporting.</b> A nightly batch job rebuilt on Delta Change Data Feed and Structured Streaming: 24 hours to 15 minutes.</li><li><b>Spark tuning.</b> 30% more pipeline throughput.</li><li><b>Document ingestion.</b> OCR pipelines that turn scanned patient documents into tables for analytics and ML.</li><li>Mentor 3–5 engineers on the team.</li></ul>` },
+  consumers: { x: 47.5, z: 8.5, r: 10, tp: [44, 13.5, Math.atan2(3.5, -6)], name: "Consumers", c: "#6fc3ff",
+    html: `<p class="k">Consumers</p><h3>Who the data is for</h3><p>Gold tables feed analytics and BI, finance reporting, and data science. They are the reason the layers before this exist.</p>` },
+  tools: { x: -28, z: -26, r: 11, tp: [-21, -18, Math.atan2(-7, -8)], name: "Tools", c: "#c79f68",
+    html: `<p class="k">Tools</p><h3>What I build with</h3><p>Databricks, Delta Lake, Spark, PySpark, Azure, Airflow, Great Expectations, Python and SQL.</p><p>Go ahead, push the crates.</p>` },
+  chess: { x: CH.x, z: CH.z, r: 12, tp: [27, -20, Math.PI], name: "Chess", c: "#b7b9c6",
+    html: `<p class="k">Chess</p><h3>Play my bot</h3><p>A chess engine I wrote in plain JavaScript: alpha-beta search running in a Web Worker.</p><p class="links"><a href="chess.html">Play against it</a></p>` },
+  contact: { x: TW.x, z: TW.z, r: 11, tp: [20, 35, Math.atan2(7, 5)], name: "Contact", c: "#ffc53d",
     html: `<p class="k">Contact</p><h3>Open to senior and staff roles</h3><p class="links"><a href="mailto:psurya.924@gmail.com">psurya.924@gmail.com</a></p><p class="links"><a href="https://linkedin.com/in/surya6032/">LinkedIn</a><a href="https://github.com/Surya6032">GitHub</a><a href="resume.pdf">Resume</a></p>` }
 };
-const ORDER = ["ingest", "bronze", "silver", "gate", "gold", "|", "tools", "chess", "contact"];
+const ORDER = ["ingest", "bronze", "silver", "gate", "gold", "consumers", "|", "tools", "chess", "contact"];
+// The run: carry the record through these stops in order.
+const STOPS = ["bronze", "silver", "gate", "gold", "consumers"];
+const run = { stage: 0, t: 0, done: false, assisted: false };
+const fmt = t => Math.floor(t / 60) + ":" + String(Math.floor(t % 60)).padStart(2, "0");
 const stepsEl = document.getElementById("steps"), cardEl = document.getElementById("card"), stepBtn = {};
 ORDER.forEach(k => {
   if (k === "|") { const s = document.createElement("span"); s.className = "sep"; stepsEl.appendChild(s); return; }
   const b = document.createElement("button"); b.type = "button"; b.textContent = ZONES[k].name; b.style.setProperty("--c", ZONES[k].c);
-  b.addEventListener("click", () => { teleport(k); canvas.focus(); });
+  b.addEventListener("click", () => { if (started && !run.done && k !== "ingest") run.assisted = true; teleport(k); canvas.focus(); });
   stepsEl.appendChild(b); stepBtn[k] = b;
 });
 function yearsFill(root) {
   root.querySelectorAll("[data-years-since]").forEach(el => { const p = el.getAttribute("data-years-since").split("-"), n = new Date(); el.textContent = Math.max(1, Math.floor(((n.getFullYear() - +p[0]) * 12 + n.getMonth() - (+p[1] - 1)) / 12)); });
 }
 let currentZone = null;
+function advance(k) {
+  if (!started || run.done || STOPS[run.stage] !== k) return;
+  run.stage++;
+  if (ZONES[k].cargo) car.cargo = ZONES[k].cargo;
+  if (k === "gate") car.checked = true;
+  puff(car.x, 1.8, car.z, k === "gate" ? C.green : car.cargo, 16, 7, 6);
+  if (run.stage === STOPS.length) run.done = true;
+}
+function cardHtml(k) {
+  let h = ZONES[k].html; const need = STOPS.indexOf(k);
+  if (need < 0) return h;
+  if (k === "consumers" && run.done) {
+    h += '<p class="note ok">' + (run.assisted ? "Delivered. You used the jump bar, so this run is untimed." : "Delivered in " + fmt(run.t) + ". Your record went raw, bronze, silver, checked, gold.") + '</p><button class="again" id="again" type="button">Run it again</button>';
+  } else if (need > run.stage) {
+    h += '<p class="note">Your record isn’t ready for this stop yet. Next stop: ' + ZONES[STOPS[run.stage]].name + '.</p>';
+  }
+  return h;
+}
+function resetRun() { run.stage = 0; run.t = 0; run.done = false; run.assisted = false; car.cargo = C.raw; car.checked = false; teleport("ingest"); canvas.focus(); }
 function setZone(k) {
   if (k === currentZone) return;
   if (currentZone) stepBtn[currentZone].classList.remove("here");
   currentZone = k;
   if (k) {
-    cardEl.innerHTML = ZONES[k].html; yearsFill(cardEl); cardEl.scrollTop = 0; cardEl.classList.add("show");
+    advance(k);
+    cardEl.innerHTML = cardHtml(k); yearsFill(cardEl); cardEl.scrollTop = 0; cardEl.classList.add("show");
     stepBtn[k].classList.add("here", "seen");
-    if (ZONES[k].cargo) car.cargo = ZONES[k].cargo;
+    const again = document.getElementById("again"); if (again) again.addEventListener("click", resetRun);
   } else cardEl.classList.remove("show");
 }
 
 /* ───────────── car and input ───────────── */
-const car = { x: 0, z: 33, h: Math.PI, v: 0, steer: 0, y: 0, vy: 0, spin: 0, pitch: 0, roll: 0, sink: 0, cargo: C.raw, R: 1.5 };
+const car = { x: 0, z: 33, h: Math.PI, v: 0, steer: 0, y: 0, vy: 0, spin: 0, pitch: 0, roll: 0, sink: 0, cargo: C.raw, checked: false, R: 1.5 };
 function teleport(k) { const t = ZONES[k].tp; car.x = t[0]; car.z = t[1]; car.h = t[2]; car.v = 0; car.y = 0; car.vy = 0; camT[0] = car.x; camT[2] = car.z; }
 const keys = {};
 const KEYMAP = { ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down", ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right", ShiftLeft: "boost", ShiftRight: "boost", Space: "jump" };
@@ -540,6 +628,7 @@ addEventListener("keydown", e => {
   if (e.target.closest && e.target.closest("a, button") && e.code !== "Space" && !KEYMAP[e.code]) return;
   const k = KEYMAP[e.code]; if (k) { keys[k] = true; e.preventDefault(); }
   if (e.code === "KeyR") teleport(currentZone || "ingest");
+  if (e.code === "KeyM") mapEl.hidden = !mapEl.hidden;
 });
 addEventListener("keyup", e => { const k = KEYMAP[e.code]; if (k) keys[k] = false; });
 addEventListener("blur", () => { for (const k in keys) keys[k] = false; });
@@ -560,6 +649,35 @@ const joyEnd = e => { if (e.pointerId !== joy.id) return; joy.on = false; joyEl.
 canvas.addEventListener("pointerup", joyEnd); canvas.addEventListener("pointercancel", joyEnd);
 let zoom = 1;
 canvas.addEventListener("wheel", e => { zoom = clamp(zoom * (e.deltaY > 0 ? 1.08 : 0.93), 0.6, 1.7); e.preventDefault(); }, { passive: false });
+
+/* ───────────── minimap and run display ───────────── */
+const mapEl = document.getElementById("map"), mapC = document.getElementById("mapc"), mx = mapC.getContext("2d");
+const MS = mapC.width, mk = (MS / 2 - 8) / (R + 3), MX = x => MS / 2 + x * mk, MZ = z => MS / 2 + z * mk;
+const mapBg = document.createElement("canvas"); mapBg.width = mapBg.height = MS;
+{
+  const g = mapBg.getContext("2d");
+  g.fillStyle = "#2b2d38"; g.beginPath(); g.arc(MS / 2, MS / 2, R * mk, 0, 7); g.fill();
+  g.strokeStyle = "#50525f"; g.lineWidth = 4.6 * mk; g.lineCap = "round"; g.lineJoin = "round";
+  ROADS.forEach(pth => { g.beginPath(); pth.forEach(([x, z], i) => i ? g.lineTo(MX(x), MZ(z)) : g.moveTo(MX(x), MZ(z))); g.stroke(); });
+  const dot = (x, z, r, c) => { g.fillStyle = c; g.beginPath(); g.arc(MX(x), MZ(z), r * mk, 0, 7); g.fill(); };
+  dot(LAKES.bronze.x, LAKES.bronze.z, 7.5, "#ff8f5a"); dot(LAKES.silver.x, LAKES.silver.z, 7.5, "#cfd3dc"); dot(LAKES.gold.x, LAKES.gold.z, 7.5, "#ffc53d");
+  dot(GATE.x, GATE.z, 2.6, "#5be38a"); dot(47.5, 8, 3, "#6fc3ff"); dot(-28, -26, 3.4, "#c79f68"); dot(TW.x, TW.z, 2.6, "#ff5e57"); dot(-14.5, 40.5, 3, "#8a8c9b");
+  g.fillStyle = "#b7b9c6"; g.fillRect(MX(CH.x - 6), MZ(CH.z - 6), 12 * mk, 12 * mk);
+}
+function drawMap() {
+  if (mapEl.hidden) return;
+  mx.clearRect(0, 0, MS, MS); mx.drawImage(mapBg, 0, 0);
+  if (!run.done) { const z = ZONES[STOPS[run.stage]], pulse = 0.5 + 0.5 * Math.sin(time * 4); mx.strokeStyle = "rgba(255,255,255," + (0.45 + 0.5 * pulse) + ")"; mx.lineWidth = 3; mx.beginPath(); mx.arc(MX(z.x), MZ(z.z), (z === ZONES.gate || z === ZONES.consumers ? 5.5 : 10) * mk + pulse * 3, 0, 7); mx.stroke(); }
+  mx.save(); mx.translate(MX(car.x), MZ(car.z)); mx.rotate(Math.PI - car.h);
+  mx.fillStyle = "#18191f"; mx.beginPath(); mx.moveTo(0, -15); mx.lineTo(11, 12); mx.lineTo(0, 6); mx.lineTo(-11, 12); mx.closePath(); mx.fill();
+  mx.fillStyle = "#ffc53d"; mx.beginPath(); mx.moveTo(0, -11); mx.lineTo(7.5, 8.5); mx.lineTo(0, 4); mx.lineTo(-7.5, 8.5); mx.closePath(); mx.fill();
+  mx.restore();
+}
+const runTimeEl = document.getElementById("runTime"), runNextEl = document.getElementById("runNext"); let runShown = "";
+function drawRun() {
+  const a = run.assisted ? "untimed" : fmt(run.t), b = run.done ? "Delivered to Consumers" : "Next stop: " + ZONES[STOPS[run.stage]].name;
+  if (a + b !== runShown) { runShown = a + b; runTimeEl.textContent = a; runNextEl.textContent = b; }
+}
 
 /* ───────────── particles ───────────── */
 const parts = [];
@@ -584,9 +702,9 @@ function update(dt) {
   let inWater = null;
   for (const k in LAKES) { const L = LAKES[k]; if (Math.hypot(car.x - L.x, car.z - L.z) < L.r - 0.6) inWater = L; }
   const onGround = car.y <= 0.001;
-  const maxF = (keys.boost ? 25 : 15) * (inWater ? 0.45 : 1);
+  const maxF = (keys.boost ? 27 : 17) * (inWater ? 0.45 : 1);
   if (onGround) {
-    if (thr > 0) car.v += 30 * thr * dt;
+    if (thr > 0) { if (car.v < maxF) car.v = Math.min(maxF, car.v + 30 * thr * dt); }
     else if (thr < 0) car.v += (car.v > 0.5 ? -46 : -20) * -thr * dt;
     else car.v -= Math.sign(car.v) * Math.min(Math.abs(car.v), 9 * dt);
   }
@@ -654,6 +772,8 @@ function update(dt) {
   }
   for (let i = parts.length - 1; i >= 0; i--) { const p = parts[i]; p.life += dt; if (p.life > p.max) { parts.splice(i, 1); continue; } p.vy -= 9 * dt; p.x += p.vx * dt; p.y = Math.max(0.05, p.y + p.vy * dt); p.z += p.vz * dt; }
 
+  if (!run.done) run.t += dt;
+
   // gate and zones
   if (Math.hypot(car.x - GATE.x, car.z - GATE.z) < 2.5) gateFlash = 1;
   gateFlash = Math.max(0, gateFlash - dt * 1.2);
@@ -676,7 +796,7 @@ function resize() {
   if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
   gl.viewport(0, 0, w, h);
 }
-const crateBase = [1, 1, 1];
+const crateBase = [1, 1, 1], LED_ON = hex("#7ff0a0"), LED_OFF = hex("#1f3a28"), GATE_IDLE = hex("#2f7a4a"), TOWER_OFF = hex("#5a2a28"), HEAD = hex("#fff3cf"), WARM = [1, 0.92, 0.72], BLACK = [0, 0, 0];
 function render(dt) {
   resize();
   const asp = canvas.width / canvas.height, far = asp < 0.8 ? 1.5 : asp < 1.2 ? 1.2 : 1;
@@ -689,23 +809,24 @@ function render(dt) {
   gl.clearColor(C.fog[0], C.fog[1], C.fog[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.depthMask(true); gl.disable(gl.CULL_FACE);
   gl.uniformMatrix4fv(U.uVP, false, VP); gl.uniform3fv(U.uLight, LIGHT); gl.uniform3fv(U.uFogColor, C.fog);
-  gl.uniform3fv(U.uCam, cam); gl.uniform2f(U.uFog, 95 * zoom * far, 240 * zoom * far); gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAlpha, 1);
+  gl.uniform3fv(U.uCam, cam); gl.uniform2f(U.uFog, 85 * zoom * far, 215 * zoom * far); gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAlpha, 1);
 
   draw(BAKED, IDENT, WHITE, 0, 0, null, IDENTN);
   for (const s of LIVE) draw(s.m, s.M, s.c, s.em, s.mode, s.tex, s.N);
+  draw(BULBS, IDENT, WHITE, 1, 0, null, IDENTN);
 
   // blinking LEDs
-  for (const l of leds) { const on = Math.sin(time * l.speed + l.phase) > 0.2; draw(M_.box, l.M, on ? hex("#7ff0a0") : hex("#2f5a3c"), on ? 1 : 0); }
+  for (const l of leds) { const on = Math.sin(time * l.speed + l.phase) > 0.2; draw(M_.box, l.M, on ? LED_ON : LED_OFF, on ? 1 : 0); }
   // gate light
-  { const dir = Math.atan2(30, 22), g = 0.3 + 0.7 * gateFlash; draw(M_.box, TRS(GATE.x, 6.06, GATE.z, dir, 9.6, 0.14, 0.7), mix3(hex("#bfe8cc"), C.green, g), g); }
+  { const dir = Math.atan2(30, 22), g = 0.3 + 0.7 * gateFlash; draw(M_.box, TRS(GATE.x, 6.06, GATE.z, dir, 9.6, 0.14, 0.7), mix3(GATE_IDLE, C.green, g), 1); }
   // tower light
-  draw(M_.ico, TRS(TW.x, 14.4, TW.z, 0, 0.7), Math.sin(time * 3) > 0 ? C.red : hex("#7a3a35"), Math.sin(time * 3) > 0 ? 1 : 0);
+  draw(M_.ico, TRS(TW.x, 14.4, TW.z, 0, 0.7), Math.sin(time * 3) > 0 ? C.red : TOWER_OFF, Math.sin(time * 3) > 0 ? 1 : 0);
 
   // packets on conveyors
   for (const cv of conveyors) {
     for (let i = 0; i < cv.n; i++) {
       const t = (i / cv.n + time * 3.2 / cv.len) % 1;
-      draw(M_.box, TRS(cv.ax + cv.dx * t, cv.y + 0.42, cv.az + cv.dz * t, cv.ry + t * 0.001, 0.62, 0.62, 0.62), cv.c0, 0.45);
+      draw(M_.box, TRS(cv.ax + cv.dx * t, cv.y + 0.42, cv.az + cv.dz * t, cv.ry + t * 0.001, 0.62, 0.62, 0.62), cv.c0, 1);
     }
   }
 
@@ -716,12 +837,13 @@ function render(dt) {
   const base = mul(mul(mul(T(car.x, car.y + car.sink, car.z), RY(car.h)), RX(car.pitch)), RZ(car.roll));
   const part = (m, x, y, z, sx, sy, sz, c, em, extra) => { let M = mul(base, T(x, y, z)); if (extra) M = mul(M, extra); draw(m, mul(M, S(sx, sy, sz)), c, em); };
   part(M_.box, 0, 0.85, 0, 2.0, 0.75, 3.3, C.car);
-  part(M_.box, 0, 1.5, 0.35, 1.7, 0.6, 1.4, C.white);
+  part(M_.box, 0, 1.5, 0.35, 1.7, 0.6, 1.4, C.cabin);
   part(M_.box, 0, 1.52, 1.06, 1.5, 0.42, 0.02, C.glass);
   part(M_.box, 0, 1.33, -0.95, 1.7, 0.08, 1.2, C.dark);
-  part(M_.box, 0, 1.75, -0.95, 0.9, 0.9, 0.9, car.cargo, 0.5, RY(time * 0.8));
-  part(M_.box, 0.6, 0.95, 1.66, 0.35, 0.18, 0.04, hex("#fff6d8"), 1);
-  part(M_.box, -0.6, 0.95, 1.66, 0.35, 0.18, 0.04, hex("#fff6d8"), 1);
+  part(M_.box, 0, 1.75, -0.95, 0.9, 0.9, 0.9, car.cargo, 1, RY(time * 0.8));
+  if (car.checked) part(M_.box, 0, 2.38, -0.95, 0.5, 0.12, 0.5, C.green, 1, RY(time * 0.8));
+  part(M_.box, 0.6, 0.95, 1.66, 0.35, 0.18, 0.04, HEAD, 1);
+  part(M_.box, -0.6, 0.95, 1.66, 0.35, 0.18, 0.04, HEAD, 1);
   part(M_.box, 0.65, 0.95, -1.66, 0.3, 0.16, 0.04, C.red, 0.6);
   part(M_.box, -0.65, 0.95, -1.66, 0.3, 0.16, 0.04, C.red, 0.6);
   [[1.02, 1.1, true], [-1.02, 1.1, true], [1.02, -1.1, false], [-1.02, -1.1, false]].forEach(([x, z, front]) => {
@@ -730,15 +852,25 @@ function render(dt) {
   });
 
   // particles
-  for (const p of parts) { const s = p.s * (1 - p.life / p.max); draw(M_.box, TRS(p.x, p.y, p.z, p.life * 3, s, s, s), p.c, 0.4); }
+  for (const p of parts) { const s = p.s * (1 - p.life / p.max); draw(M_.box, TRS(p.x, p.y, p.z, p.life * 3, s, s, s), p.c, 0.9); }
 
   // transparent: blob shadows
   gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ZERO, gl.ONE); gl.depthMask(false);
-  const blk = [0.18, 0.15, 0.1];
   draw(SHADOWS, IDENT, WHITE, 0, 5, null, IDENTN);
-  gl.uniform1f(U.uAlpha, 0.2 / (1 + car.y * 0.3)); draw(M_.cyl24, TRS(car.x, 0.1, car.z, car.h, 2.7 + car.y * 0.2, 0.01, 3.9 + car.y * 0.2), blk, 0, 3);
-  for (const b of crates) if (Math.hypot(b.x, b.z) < R) { gl.uniform1f(U.uAlpha, 0.16 / (1 + b.y * 0.3)); draw(M_.cyl24, TRS(b.x, 0.1, b.z, 0, b.s * 1.5, 0.01, b.s * 1.5), blk, 0, 3); }
+  gl.uniform1f(U.uAlpha, 0.38 / (1 + car.y * 0.3)); draw(M_.cyl24, TRS(car.x, 0.1, car.z, car.h, 2.7 + car.y * 0.2, 0.01, 3.9 + car.y * 0.2), BLACK, 0, 3);
+  for (const b of crates) if (Math.hypot(b.x, b.z) < R) { gl.uniform1f(U.uAlpha, 0.3 / (1 + b.y * 0.3)); draw(M_.cyl24, TRS(b.x, 0.1, b.z, 0, b.s * 1.5, 0.01, b.s * 1.5), BLACK, 0, 3); }
+
+  // additive: pools of light on the ground
+  gl.blendFunc(gl.ONE, gl.ONE);
+  gl.uniform1f(U.uAlpha, 1); draw(GLOWS, IDENT, WHITE, 0, 7, GLOW, IDENTN);
+  const fx = Math.sin(car.h), fz = Math.cos(car.h);
+  gl.uniform1f(U.uAlpha, 0.55); draw(M_.plane, TRS(car.x + fx * 7.5, 0.13, car.z + fz * 7.5, car.h, 8, 1, 13), WARM, 0, 7, GLOW);
+  gl.uniform1f(U.uAlpha, 0.4); draw(M_.plane, TRS(car.x - fx * 0.9, 0.13, car.z - fz * 0.9, 0, 7.5, 1, 7.5), car.cargo, 0, 7, GLOW);
+  gl.uniform1f(U.uAlpha, 0.22 + 0.6 * gateFlash); draw(M_.plane, TRS(GATE.x, 0.13, GATE.z, 0, 18, 1, 18), C.green, 0, 7, GLOW);
+  if (Math.sin(time * 3) > 0) { gl.uniform1f(U.uAlpha, 0.4); draw(M_.plane, TRS(TW.x, 0.13, TW.z, 0, 16, 1, 16), C.red, 0, 7, GLOW); }
   gl.uniform1f(U.uAlpha, 1); gl.depthMask(true); gl.disable(gl.BLEND);
+
+  drawMap(); drawRun();
 }
 
 /* ───────────── loop and start ───────────── */
@@ -756,7 +888,7 @@ document.getElementById("go").addEventListener("click", () => {
   stepBtn.ingest.classList.add("seen");
 });
 // Test hook: step the simulation deterministically (used for automated checks; harmless otherwise).
-window.__lakehouse = { car, crates, zones: ZONES, teleport, keys, step(n, dt) { for (let i = 0; i < n; i++) { time += dt; update(dt); } render(1); }, get zone() { return currentZone; } };
+window.__lakehouse = { car, crates, zones: ZONES, teleport, keys, run, step(n, dt) { for (let i = 0; i < n; i++) { time += dt; update(dt); } render(1); }, get zone() { return currentZone; } };
 requestAnimationFrame(frame);
 })();
 </script>
